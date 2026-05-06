@@ -1,26 +1,69 @@
 # ── SECRETS — NEVER COMMIT THESE ──
+
 serviceAccountKey.json
 .env
+.env.*
 *.pem
 *.key
+*.crt
 
-# ── Python ──
-__pycache__/
-*.py[cod]
-*.pyc
+# ── PYTHON ENVIRONMENTS ──
+
+.venv/
 venv/
 env/
-.venv/
-*.egg-info/
+ENV/
+env.bak/
+venv.bak/
 
-# ── Flask ──
+# ── PYTHON CACHE / BUILD ──
+
+**pycache**/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+pip-wheel-metadata/
+
+# ── FLASK ──
+
 instance/
 .webassets-cache
+*.log
 
-# ── OS ──
+# ── DATABASE FILES ──
+
+*.db
+*.sqlite3
+
+# ── OS FILES ──
+
 .DS_Store
 Thumbs.db
 
-# ── IDE ──
+# ── IDE / EDITOR ──
+
 .vscode/
 .idea/
+*.swp
+*.swo
+
+# ── TEST / COVERAGE ──
+
+.coverage
+htmlcov/
+.tox/
+
+# ── NODE (if you ever add frontend) ──
+
+node_modules/
+
+# ── RENDER / DEPLOYMENT ──
+
+.runtime/
+.cache/
