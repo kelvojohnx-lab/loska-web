@@ -588,7 +588,7 @@ def cart_count():
     return jsonify({'count': sum(get_cart().values())})
 
 # ── Seed Demo Data ─────────────────────────────────────────────────────────────
-@app.route('/seed-demo', methods=['POST'])
+@app.route('/seed-demo', methods=['GET', 'POST'])
 def seed_demo():
     p_ref = get_db_ref('products')
     a_ref = get_db_ref('accessories')
