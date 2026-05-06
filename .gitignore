@@ -1,0 +1,26 @@
+# ── SECRETS — NEVER COMMIT THESE ──
+serviceAccountKey.json
+.env
+*.pem
+*.key
+
+# ── Python ──
+__pycache__/
+*.py[cod]
+*.pyc
+venv/
+env/
+.venv/
+*.egg-info/
+
+# ── Flask ──
+instance/
+.webassets-cache
+
+# ── OS ──
+.DS_Store
+Thumbs.db
+
+# ── IDE ──
+.vscode/
+.idea/

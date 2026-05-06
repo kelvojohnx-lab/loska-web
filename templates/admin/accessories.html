@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block title %}Manage Accessories – Loska Admin{% endblock %}
+{% block content %}
+<div class="admin-layout">
+  <aside class="admin-sidebar">
+    <div class="admin-brand"><img src="{{ url_for('static', filename='images/loska_logo.png') }}" alt="Loska" onerror="this.style.display='none'"><span>Admin Panel</span></div>
+    <nav class="admin-nav">
+      <div class="nav-section">Main</div><a href="{{ url_for('admin_dashboard') }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+      <div class="nav-section">Catalogue</div>
+      <a href="{{ url_for('admin_products') }}"><i class="fas fa-mobile-alt"></i> Phones</a>
+      <a href="{{ url_for('admin_add_product') }}"><i class="fas fa-plus-circle"></i> Add Phone</a>
+      <a href="{{ url_for('admin_accessories') }}" class="active"><i class="fas fa-headphones-alt"></i> Accessories</a>
+      <a href="{{ url_for('admin_add_accessory') }}"><i class="fas fa-plus-circle"></i> Add Accessory</a>
+      <div class="nav-section">Sales</div>
+      <a href="{{ url_for('admin_orders') }}"><i class="fas fa-shopping-bag"></i> Orders</a>
+      <a href="{{ url_for('admin_airtime') }}"><i class="fas fa-sim-card"></i> Airtime</a>
+      <div class="nav-section">Account</div>
+      <a href="{{ url_for('home') }}"><i class="fas fa-globe"></i> View Site</a>
+      <a href="{{ url_for('logout') }}" style="color:#FCA5A5"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </nav>
+  </aside>
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <div><h2>Accessories</h2><p style="color:var(--gray-400);font-size:.85rem">{{ accessories|length }} accessory item{{ 's' if accessories|length!=1 }}</p></div>
+      <a href="{{ url_for('admin_add_accessory') }}" class="btn btn-gold btn-sm"><i class="fas fa-plus"></i> Add Accessory</a>
+    </div>
+    <div class="admin-table-card">
+      <div class="table-header"><h3>All Accessories</h3><input type="text" id="searchInput" placeholder="Search…" class="form-control" style="width:220px;padding:8px 12px;font-size:.85rem"></div>
+      {% if accessories %}
+      <div style="overflow-x:auto"><table class="table" id="accTable">
+        <thead><tr><th>Image</th><th>Name</th><th>Brand</th><th>Category</th><th>Price</th><th>Stock</th><th>Compatible</th><th>Featured</th><th>Actions</th></tr></thead>
+        <tbody>
+          {% for a in accessories %}
+          <tr>
+            <td><img src="{{ a.image_url or '' }}" style="width:52px;height:52px;object-fit:cover;border-radius:8px;background:var(--gray-100)" onerror="this.style.display='none'"></td>
+            <td><strong>{{ a.name }}</strong></td>
+            <td>{{ a.brand or '–' }}</td>
+            <td><span style="background:var(--black);color:var(--gold);font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:99px">{{ a.category }}</span></td>
+            <td><strong>KSh {{ '{:,.0f}'.format(a.price) }}</strong></td>
+            <td>
+              {% if a.stock > 5 %}<span class="status-badge status-paid">{{ a.stock }}</span>
+              {% elif a.stock > 0 %}<span class="status-badge status-pending">{{ a.stock }}</span>
+              {% else %}<span class="status-badge status-failed">0</span>{% endif %}
+            </td>
+            <td style="max-width:130px;font-size:.8rem;color:var(--gray-600)">{{ a.compatible or '–' }}</td>
+            <td>{% if a.featured %}<i class="fas fa-star" style="color:var(--gold)"></i>{% else %}<i class="far fa-star" style="color:var(--gray-400)"></i>{% endif %}</td>
+            <td><div style="display:flex;gap:6px">
+              <a href="{{ url_for('admin_edit_accessory', item_id=a.id) }}" class="btn btn-sm btn-outline" title="Edit"><i class="fas fa-edit"></i></a>
+              <a href="{{ url_for('accessory_detail', item_id=a.id) }}" class="btn btn-sm btn-outline" target="_blank" title="View"><i class="fas fa-eye"></i></a>
+              <form method="POST" action="{{ url_for('admin_delete_accessory', item_id=a.id) }}" style="display:inline">
+                <button type="submit" class="btn btn-sm" style="background:var(--gray-100);color:var(--danger)" data-confirm="Delete {{ a.name }}?" title="Delete"><i class="fas fa-trash"></i></button>
+              </form>
+            </div></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table></div>
+      {% else %}
+      <div class="empty-state" style="padding:60px"><i class="fas fa-headphones-alt"></i><p>No accessories yet.</p><a href="{{ url_for('admin_add_accessory') }}" class="btn btn-gold mt-3">Add First Accessory</a></div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% block extra_js %}<script>document.getElementById('searchInput')?.addEventListener('input',function(){const q=this.value.toLowerCase();document.querySelectorAll('#accTable tbody tr').forEach(row=>{row.style.display=row.textContent.toLowerCase().includes(q)?'':'none';});});</script>{% endblock %}
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Card Payment – Loska{% endblock %}
+{% block content %}
+<section class="section" style="background:var(--off-white);min-height:70vh;display:flex;align-items:center">
+<div class="container"><div class="form-card" style="max-width:520px;margin:0 auto;border-top:4px solid var(--gold)">
+  <h2 class="form-title"><i class="fas fa-credit-card" style="color:var(--black)"></i> Card Payment</h2>
+  <p class="form-subtitle">Order #{{ order_id }} — KSh {{ '{:,.0f}'.format(order.total_amount if order else 0) }}</p>
+  <form method="POST" data-validate>
+    <div class="form-group"><label>Cardholder Name <span>*</span></label><div class="input-group"><i class="fas fa-user"></i><input type="text" class="form-control" name="card_name" placeholder="Name on card" required></div></div>
+    <div class="form-group"><label>Card Number <span>*</span></label><div class="input-group"><i class="fas fa-credit-card"></i><input type="text" class="form-control" name="card_number" placeholder="XXXX XXXX XXXX XXXX" required maxlength="19"></div></div>
+    <div class="form-row">
+      <div class="form-group"><label>Expiry <span>*</span></label><div class="input-group"><i class="fas fa-calendar"></i><input type="text" class="form-control" name="expiry" placeholder="MM/YY" required maxlength="5"></div></div>
+      <div class="form-group"><label>CVV <span>*</span></label><div class="input-group"><i class="fas fa-lock"></i><input type="password" class="form-control" name="cvv" placeholder="XXX" required maxlength="4"></div></div>
+    </div>
+    <button type="submit" class="btn btn-dark btn-block btn-lg"><i class="fas fa-lock"></i> Pay KSh {{ '{:,.0f}'.format(order.total_amount if order else 0) }}</button>
+  </form>
+  <p style="text-align:center;font-size:.75rem;color:var(--gray-400);margin-top:12px"><i class="fas fa-shield-alt"></i> Secured by 256-bit SSL encryption</p>
+</div></div>
+</section>
+{% endblock %}

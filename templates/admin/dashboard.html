@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard – Loska{% endblock %}
+{% block content %}
+<div class="admin-layout">
+  <aside class="admin-sidebar">
+    <div class="admin-brand"><img src="{{ url_for('static', filename='images/loska_logo.png') }}" alt="Loska" onerror="this.style.display='none'"><span>Admin Panel</span></div>
+    <nav class="admin-nav">
+      <div class="nav-section">Main</div>
+      <a href="{{ url_for('admin_dashboard') }}" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+      <div class="nav-section">Catalogue</div>
+      <a href="{{ url_for('admin_products') }}"><i class="fas fa-mobile-alt"></i> Phones</a>
+      <a href="{{ url_for('admin_add_product') }}"><i class="fas fa-plus-circle"></i> Add Phone</a>
+      <a href="{{ url_for('admin_accessories') }}"><i class="fas fa-headphones-alt"></i> Accessories</a>
+      <a href="{{ url_for('admin_add_accessory') }}"><i class="fas fa-plus-circle"></i> Add Accessory</a>
+      <div class="nav-section">Sales</div>
+      <a href="{{ url_for('admin_orders') }}"><i class="fas fa-shopping-bag"></i> Orders</a>
+      <a href="{{ url_for('admin_airtime') }}"><i class="fas fa-sim-card"></i> Airtime</a>
+      <div class="nav-section">Account</div>
+      <a href="{{ url_for('home') }}"><i class="fas fa-globe"></i> View Site</a>
+      <a href="{{ url_for('logout') }}" style="color:#FCA5A5"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </nav>
+  </aside>
+  <div class="admin-main">
+    <div class="admin-topbar">
+      <div><h2>Dashboard Overview</h2><p style="color:var(--gray-400);font-size:.85rem">Welcome back, {{ session.name }}</p></div>
+      <a href="{{ url_for('admin_add_product') }}" class="btn btn-gold btn-sm"><i class="fas fa-plus"></i> Add Product</a>
+    </div>
+    <div class="admin-stats">
+      <div class="admin-stat"><div class="stat-icon"><i class="fas fa-mobile-alt"></i></div><div class="stat-info"><label>Phones</label><strong>{{ stats.products }}</strong></div></div>
+      <div class="admin-stat"><div class="stat-icon"><i class="fas fa-headphones-alt"></i></div><div class="stat-info"><label>Accessories</label><strong>{{ stats.accessories }}</strong></div></div>
+      <div class="admin-stat"><div class="stat-icon"><i class="fas fa-shopping-bag"></i></div><div class="stat-info"><label>Orders</label><strong>{{ stats.orders }}</strong></div></div>
+      <div class="admin-stat"><div class="stat-icon"><i class="fas fa-money-bill-wave"></i></div><div class="stat-info"><label>Revenue</label><strong>KSh {{ '{:,.0f}'.format(stats.revenue) }}</strong></div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:28px">
+      <a href="{{ url_for('admin_add_product') }}" class="btn btn-gold"><i class="fas fa-plus"></i> Add Phone</a>
+      <a href="{{ url_for('admin_add_accessory') }}" class="btn btn-dark"><i class="fas fa-plus"></i> Add Accessory</a>
+      <a href="{{ url_for('admin_orders') }}" class="btn btn-outline"><i class="fas fa-shopping-bag"></i> Orders</a>
+      <a href="{{ url_for('admin_airtime') }}" class="btn btn-outline"><i class="fas fa-sim-card"></i> Airtime</a>
+    </div>
+    <div class="admin-table-card">
+      <div class="table-header"><h3>Recent Orders</h3><a href="{{ url_for('admin_orders') }}" class="btn btn-outline btn-sm">View All</a></div>
+      {% if orders %}
+      <div style="overflow-x:auto"><table class="table">
+        <thead><tr><th>Order #</th><th>Customer</th><th>Phone</th><th>Amount</th><th>Payment</th><th>Status</th><th>Date</th></tr></thead>
+        <tbody>{% for o in orders[:10] %}
+        <tr>
+          <td><strong>#{{ o.id }}</strong></td><td>{{ o.user_name or '–' }}</td><td>{{ o.phone or '–' }}</td>
+          <td><strong>KSh {{ '{:,.0f}'.format(o.total_amount) }}</strong></td>
+          <td><span style="text-transform:uppercase;font-size:.75rem;font-weight:700">{{ o.payment_method }}</span></td>
+          <td><span class="status-badge status-{{ o.status }}">{{ o.status|replace('_',' ')|title }}</span></td>
+          <td>{{ o.order_date[:10] if o.order_date else '–' }}</td>
+        </tr>{% endfor %}</tbody>
+      </table></div>
+      {% else %}<div class="empty-state" style="padding:40px"><i class="fas fa-shopping-bag"></i><p>No orders yet.</p></div>{% endif %}
+    </div>
+    <div style="margin-top:20px;background:var(--gold-pale);border:1px dashed var(--gold);border-radius:var(--radius);padding:20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+      <div><strong>🚀 Seed Demo Data</strong><p style="font-size:.82rem;color:var(--gray-600);margin-top:2px">Populate with 6 phones + 8 accessories + admin account.</p></div>
+      <form method="POST" action="/seed-demo"><button type="submit" class="btn btn-gold btn-sm">Seed Demo Data</button></form>
+    </div>
+  </div>
+</div>
+{% endblock %}

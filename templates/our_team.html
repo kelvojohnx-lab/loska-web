@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block title %}Our Team – Loska Communications Ltd{% endblock %}
+{% block content %}
+
+<div class="info-hero">
+  <div class="container">
+    <span class="tag">The People Behind Loska</span>
+    <h1>Meet Our Team</h1>
+    <p>A passionate group of technology enthusiasts and customer service champions dedicated to making your experience exceptional.</p>
+  </div>
+</div>
+<div class="gold-divider"></div>
+
+<!-- Leadership -->
+<section class="section">
+  <div class="container">
+    <div class="section-header animate-up">
+      <span class="tag">Leadership</span>
+      <h2>Executive Team</h2>
+      <p>Experienced leaders guiding Loska Communications towards becoming East Africa's most trusted tech retailer.</p>
+    </div>
+    <div class="team-grid">
+      {% for member in [
+        ('CEO & Founder','fa-user-tie','Leads the company vision, strategy, and overall operations with 10+ years in telecoms.','fas fa-linkedin,fas fa-twitter'),
+        ('General Manager','fa-user-cog','Oversees day-to-day operations, supply chain, and delivery logistics across Kenya.','fas fa-linkedin,fas fa-twitter'),
+        ('Head of Sales','fa-chart-line','Drives revenue growth and manages the sales team to deliver exceptional customer experiences.','fas fa-linkedin,fas fa-twitter'),
+        ('Head of Technology','fa-laptop-code','Manages our e-commerce platform, digital payments, and IT infrastructure.','fas fa-linkedin,fas fa-github'),
+      ] %}
+      <div class="team-card animate-up">
+        <div class="avatar-placeholder"><i class="fas {{ member[1] }}"></i></div>
+        <div class="team-body">
+          <h3>{{ ['James Mwangi','Shote Ali','Peter Kamau','Kelvin Nderitu'][loop.index0] }}</h3>
+          <div class="role">{{ member[0] }}</div>
+          <p>{{ member[1] }}</p>
+          <p style="font-size:.85rem;color:var(--gray-600);margin-top:8px">{{ member[2] }}</p>
+          <div style="display:flex;gap:8px;justify-content:center;margin-top:12px">
+            {% for icon in member[3].split(',') %}
+            <a href="#" style="width:32px;height:32px;background:var(--gold-pale);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--gold-dark);font-size:.85rem;transition:all var(--transition)" onmouseover="this.style.background='var(--gold)';this.style.color='var(--black)'" onmouseout="this.style.background='var(--gold-pale)';this.style.color='var(--gold-dark)'">
+              <i class="{{ icon }}"></i>
+            </a>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Department Teams -->
+<section class="section" style="background:var(--off-white)">
+  <div class="container">
+    <div class="section-header animate-up">
+      <span class="tag">Our Departments</span>
+      <h2>Dedicated Teams</h2>
+      <p>Each team plays a vital role in delivering the Loska promise to our customers.</p>
+    </div>
+    <div class="team-grid">
+      {% for dept, icon, count, desc in [
+        ('Sales & Customer Service','fa-headset',8,'Our front-line team handles walk-in customers, online orders, and all customer support inquiries with warmth and professionalism.'),
+        ('Warehouse & Logistics','fa-warehouse',5,'Ensuring every product is properly stored, handled, and delivered safely and on time to customers across Kenya.'),
+        ('Finance & Accounting','fa-calculator',3,'Managing our financial operations, vendor payments, and ensuring transparent pricing for our customers.'),
+        ('Marketing & Digital','fa-bullhorn',4,'Creating awareness, managing our social media presence, and driving growth through digital campaigns.'),
+        ('Technical Support','fa-wrench',4,'Our tech-savvy team handles device repairs, software issues, and provides expert product recommendations.'),
+        ('Procurement','fa-boxes',3,'Sourcing genuine products from verified suppliers and maintaining strong relationships with top brands.'),
+      ] %}
+      <div class="service-card animate-up">
+        <div class="service-icon"><i class="fas {{ icon }}"></i></div>
+        <h3>{{ dept }}</h3>
+        <div style="font-size:.78rem;color:var(--gold-dark);font-weight:700;margin-bottom:10px">{{ count }} Team Members</div>
+        <p>{{ desc }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Join Us -->
+<section class="section-sm" style="background:var(--black);text-align:center">
+  <div class="container animate-up">
+    <span class="tag" style="background:rgba(201,168,76,.15);color:var(--gold-light);border-color:rgba(201,168,76,.3)">We're Hiring</span>
+    <h2 style="color:var(--white);margin:12px 0 8px">Want to Join the Loska Family?</h2>
+    <p style="color:rgba(255,255,255,.65);margin-bottom:28px;max-width:500px;margin-left:auto;margin-right:auto">We're always looking for passionate, talented people to join our growing team. Send us your CV today.</p>
+    <a href="{{ url_for('contact') }}" class="btn btn-gold btn-lg"><i class="fas fa-paper-plane"></i> Send Your CV</a>
+  </div>
+</section>
+
+{% endblock %}

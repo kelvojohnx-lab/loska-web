@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% block title %}Our Partners – Loska Communications Ltd{% endblock %}
+{% block content %}
+
+<div class="info-hero">
+  <div class="container">
+    <span class="tag">Who We Work With</span>
+    <h1>Our Partners</h1>
+    <p>We collaborate with world-class brands and local businesses to deliver the best products and services to our customers.</p>
+  </div>
+</div>
+<div class="gold-divider"></div>
+
+<!-- Brand Partners -->
+<section class="section">
+  <div class="container">
+    <div class="section-header animate-up">
+      <span class="tag">Brand Partners</span>
+      <h2>Authorized Device Brands</h2>
+      <p>We are authorized retailers for these globally recognized smartphone and electronics brands.</p>
+    </div>
+    <div class="partners-grid">
+      {% for brand, icon, color, desc in [
+        ('Samsung','fa-mobile-alt','#1428A0','Authorized Samsung reseller — Galaxy S, A, and M series'),
+        ('Apple iPhone','fa-apple','#555555','Official iPhone reseller — iPhone 14, 15 series'),
+        ('Tecno Mobile','fa-mobile','#E30016','Tecno Spark, Camon, Phantom series'),
+        ('Infinix','fa-mobile-screen','#0066CC','Infinix Hot, Note, Zero series'),
+        ('Xiaomi','fa-mobile-retro','#FF6900','Redmi, POCO, Xiaomi series'),
+        ('Itel Mobile','fa-mobile-alt','#00B4D8','Itel feature phones and smartphones'),
+        ('Anker','fa-plug','#0069B4','Authorized Anker charging accessories dealer'),
+        ('Baseus','fa-battery-full','#1C1C1C','Premium Baseus accessories'),
+        ('Spigen','fa-shield-alt','#2D2D2D','Official Spigen cases and protectors'),
+        ('Oraimo','fa-headphones','#FF4500','Oraimo TWS earphones and accessories'),
+      ] %}
+      <div class="partner-card animate-up">
+        <div class="partner-icon" style="background:{{ color }}22;border:1px solid {{ color }}33">
+          <i class="{% if 'fa-apple' in icon %}fab{% else %}fas{% endif %} {{ icon }}" style="color:{{ color }}"></i>
+        </div>
+        <h4>{{ brand }}</h4>
+        <p>{{ desc }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Payment Partners -->
+<section class="section" style="background:var(--off-white)">
+  <div class="container">
+    <div class="section-header animate-up">
+      <span class="tag">Payment Partners</span>
+      <h2>Trusted Payment Solutions</h2>
+      <p>We work with Kenya's most trusted payment providers for seamless transactions.</p>
+    </div>
+    <div class="partners-grid" style="max-width:900px;margin:0 auto">
+      {% for name, icon, color, desc in [
+        ('Safaricom M-Pesa','fa-sim-card','#00A651','Kenya\'s No.1 mobile money platform — instant STK push payments'),
+        ('Airtel Money','fa-money-bill-wave','#E3000F','Fast and reliable mobile money transfers'),
+        ('Visa / Mastercard','fa-credit-card','#1A1F71','International debit and credit card payments'),
+        ('Equity Bank','fa-university','#D40000','Bank transfer and Equity Eazzy pay integration'),
+        ('Pesalink','fa-exchange-alt','#0066CC','Instant bank-to-bank payments across Kenyan banks'),
+      ] %}
+      <div class="partner-card animate-up">
+        <div class="partner-icon" style="background:{{ color }}18;border:1px solid {{ color }}33">
+          <i class="fas {{ icon }}" style="color:{{ color }}"></i>
+        </div>
+        <h4>{{ name }}</h4>
+        <p>{{ desc }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Delivery Partners -->
+<section class="section">
+  <div class="container">
+    <div class="section-header animate-up">
+      <span class="tag">Logistics Partners</span>
+      <h2>Delivery & Logistics</h2>
+      <p>Reliable courier partners ensuring your orders reach you safely and on time.</p>
+    </div>
+    <div class="partners-grid" style="max-width:800px;margin:0 auto">
+      {% for name, icon, color, desc in [
+        ('Sendy Logistics','fa-truck','#F97316','Same-day and next-day delivery across Nairobi'),
+        ('G4S Kenya','fa-shield-alt','#0A3D62','Secure delivery for high-value items'),
+        ('Kenya Post','fa-mail-bulk','#008000','Affordable nationwide delivery to all counties'),
+        ('Fargo Courier','fa-box','#2563EB','Express courier services countrywide'),
+      ] %}
+      <div class="partner-card animate-up">
+        <div class="partner-icon" style="background:{{ color }}18;border:1px solid {{ color }}33">
+          <i class="fas {{ icon }}" style="color:{{ color }}"></i>
+        </div>
+        <h4>{{ name }}</h4>
+        <p>{{ desc }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Become a Partner -->
+<section class="section-sm" style="background:var(--black);text-align:center">
+  <div class="container animate-up">
+    <span class="tag" style="background:rgba(201,168,76,.15);color:var(--gold-light);border-color:rgba(201,168,76,.3)">Partnership Enquiries</span>
+    <h2 style="color:var(--white);margin:12px 0 8px">Interested in Partnering with Loska?</h2>
+    <p style="color:rgba(255,255,255,.65);margin-bottom:28px;max-width:500px;margin-left:auto;margin-right:auto">
+      Whether you're a brand, supplier, reseller, or service provider — we'd love to explore a partnership with you.
+    </p>
+    <a href="{{ url_for('contact') }}" class="btn btn-gold btn-lg"><i class="fas fa-handshake"></i> Get in Touch</a>
+  </div>
+</section>
+
+{% endblock %}

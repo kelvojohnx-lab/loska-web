@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}Shopping Cart – Loska{% endblock %}
+{% block content %}
+<div class="page-header"><div class="container"><h1><i class="fas fa-shopping-cart" style="color:var(--gold)"></i> Shopping Cart</h1></div></div>
+<section class="section-sm"><div class="container">
+{% if items %}
+<div class="cart-layout">
+  <div>
+    <div class="content-card" style="padding:0;overflow:hidden">
+      <table class="cart-table">
+        <thead><tr><th colspan="2">Product</th><th>Price</th><th>Quantity</th><th>Subtotal</th><th></th></tr></thead>
+        <tbody>
+          {% for item in items %}
+          <tr>
+            <td style="width:80px"><img src="{{ item.image_url or '' }}" alt="{{ item.display_name }}" class="cart-item-img" onerror="this.src='https://via.placeholder.com/70'"></td>
+            <td>
+              <strong style="font-family:'Syne',sans-serif;font-size:.95rem">{{ item.display_name }}</strong>
+              {% if item.item_type == 'accessory' %}<div style="font-size:.72rem;color:var(--gold-dark);font-weight:700">{{ item.category }}</div>{% endif %}
+            </td>
+            <td>KSh {{ '{:,.0f}'.format(item.price) }}</td>
+            <td>
+              <form method="POST" action="{{ url_for('update_cart') }}" style="display:inline-flex;align-items:center;gap:4px">
+                <input type="hidden" name="product_id" value="{{ item.id }}">
+                <div class="qty-control">
+                  <button type="button" class="qty-btn" data-action="dec">−</button>
+                  <input type="number" class="qty-input" name="quantity" value="{{ item.qty }}" min="1" max="99">
+                  <button type="button" class="qty-btn" data-action="inc">+</button>
+                </div>
+                <button type="submit" class="btn btn-sm btn-outline" style="padding:6px 10px"><i class="fas fa-sync-alt"></i></button>
+              </form>
+            </td>
+            <td><strong>KSh {{ '{:,.0f}'.format(item.subtotal) }}</strong></td>
+            <td><a href="{{ url_for('remove_from_cart', item_id=item.id) }}" class="btn btn-sm" style="background:var(--gray-100);color:var(--danger)"><i class="fas fa-trash"></i></a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top:16px"><a href="{{ url_for('products') }}" class="btn btn-outline"><i class="fas fa-arrow-left"></i> Continue Shopping</a></div>
+  </div>
+  <div class="order-summary">
+    <h3>Order Summary</h3>
+    {% for item in items %}
+    <div class="summary-row"><span>{{ item.display_name }} × {{ item.qty }}</span><span>KSh {{ '{:,.0f}'.format(item.subtotal) }}</span></div>
+    {% endfor %}
+    <div class="summary-row" style="color:var(--success)"><span><i class="fas fa-truck"></i> Delivery</span><span>At checkout</span></div>
+    <div class="summary-row total"><span>Total</span><span>KSh {{ '{:,.0f}'.format(total) }}</span></div>
+    <a href="{{ url_for('checkout') }}" class="btn btn-gold btn-block btn-lg mt-3"><i class="fas fa-lock"></i> Proceed to Checkout</a>
+    <div style="text-align:center;margin-top:12px;font-size:.78rem;color:var(--gray-400)"><i class="fas fa-shield-alt"></i> Secured with M-Pesa & Card</div>
+  </div>
+</div>
+{% else %}
+<div class="empty-state" style="padding:80px 20px">
+  <i class="fas fa-shopping-cart" style="font-size:4rem;color:var(--gray-200)"></i>
+  <h3 style="margin:16px 0 8px">Your cart is empty</h3>
+  <p style="color:var(--gray-600);margin-bottom:24px">Add some phones or accessories to get started.</p>
+  <a href="{{ url_for('products') }}" class="btn btn-gold btn-lg"><i class="fas fa-mobile-alt"></i> Shop Phones</a>
+</div>
+{% endif %}
+</div></section>
+{% endblock %}

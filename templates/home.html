@@ -1,0 +1,278 @@
+{% extends 'base.html' %}
+{% block title %}Loska Communications Ltd – Phones, Accessories & Airtime Kenya{% endblock %}
+
+{% block content %}
+
+<!-- ══ HERO ══════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-text animate-up">
+        <span class="tag">🇰🇪 Kenya's Trusted Phone Store</span>
+        <h1>Welcome to <span>Loska</span><br>Communications Ltd</h1>
+        <p>Your one-stop shop for premium smartphones, accessories, and instant airtime services. Genuine products, unbeatable prices — delivered to your doorstep across Kenya.</p>
+        <div class="hero-ctas">
+          <a href="{{ url_for('products') }}" class="btn btn-gold btn-lg"><i class="fas fa-mobile-alt"></i> Shop Phones</a>
+          <a href="{{ url_for('airtime') }}" class="btn btn-outline-white btn-lg"><i class="fas fa-sim-card"></i> Buy Airtime</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item"><strong>500+</strong><span>Products</span></div>
+          <div class="stat-item"><strong>10K+</strong><span>Customers</span></div>
+          <div class="stat-item"><strong>24/7</strong><span>Support</span></div>
+          <div class="stat-item"><strong>Fast</strong><span>Delivery</span></div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-phone-showcase">
+          <div class="phone-card left">
+            <img src="https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=300&h=400&fit=crop" alt="Tecno" loading="lazy">
+          </div>
+          <div class="phone-card main">
+            <img src="https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400&h=600&fit=crop" alt="Samsung" loading="lazy">
+          </div>
+          <div class="phone-card right">
+            <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=300&h=400&fit=crop" alt="iPhone" loading="lazy">
+          </div>
+          <div class="floating-badge badge1"><i class="fas fa-shield-alt"></i> 1 Year Warranty</div>
+          <div class="floating-badge badge2"><i class="fab fa-whatsapp" style="color:#00A651"></i> Free Support</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="gold-divider"></div>
+
+<!-- ══ SERVICES STRIP ═════════════════════════════════════ -->
+<section style="background:var(--black);padding:20px 0">
+  <div class="container">
+    <div style="display:flex;justify-content:space-around;flex-wrap:wrap;gap:16px">
+      {% for icon, text in [('fa-truck','Free Nairobi Delivery'),('fa-shield-alt','100% Genuine Products'),('fa-headset','24/7 Customer Support'),('fa-undo','7-Day Easy Returns'),('fa-mobile-alt','M-Pesa Accepted')] %}
+      <div style="display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.8);font-size:.85rem;font-weight:500">
+        <i class="fas {{ icon }}" style="color:var(--gold);font-size:1.1rem"></i>{{ text }}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+<div class="gold-divider"></div>
+
+<!-- ══ SERVICES ═══════════════════════════════════════════ -->
+<section class="section" style="background:var(--off-white)">
+  <div class="container">
+    <div class="section-header animate-up">
+      <span class="tag">What We Offer</span>
+      <h2>Everything You Need in One Place</h2>
+      <p>From flagship smartphones to budget devices — plus instant airtime for all networks.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card animate-up">
+        <div class="service-icon"><i class="fas fa-mobile-alt"></i></div>
+        <h3>Phone Sales</h3>
+        <p>Latest smartphones from Samsung, Apple, Tecno, Infinix, and Xiaomi at competitive prices with genuine warranties.</p>
+        <a href="{{ url_for('products') }}">Browse Phones <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="service-card animate-up" style="animation-delay:.1s">
+        <div class="service-icon"><i class="fas fa-headphones-alt"></i></div>
+        <h3>Accessories</h3>
+        <p>Premium phone cases, chargers, earphones, screen protectors, power banks and more to complete your setup.</p>
+        <a href="{{ url_for('accessories') }}">Shop Accessories <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="service-card animate-up" style="animation-delay:.2s">
+        <div class="service-icon" style="background:linear-gradient(135deg,#007A3D,#00A651)"><i class="fas fa-sim-card"></i></div>
+        <h3>Airtime Services</h3>
+        <p>Instant airtime for Safaricom, Airtel, and Telkom. Pay via M-Pesa — delivered instantly, no queues.</p>
+        <a href="{{ url_for('airtime') }}">Buy Airtime <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FEATURED PHONES ════════════════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="section-header animate-up">
+      <span class="tag">Hot Deals</span>
+      <h2>Featured Phones</h2>
+      <p>Hand-picked bestsellers and latest arrivals at amazing prices.</p>
+    </div>
+    {% if featured %}
+    <div class="products-grid">
+      {% for p in featured %}
+      <div class="product-card animate-up" data-brand="{{ p.brand }}" data-model="{{ p.model }}">
+        {% if p.stock > 0 %}<span class="product-badge">In Stock</span>
+        {% else %}<span class="product-badge out">Out of Stock</span>{% endif %}
+        <a href="{{ url_for('product_detail', product_id=p.id) }}">
+          <div class="product-img">
+            <img src="{{ p.image_url or '' }}" alt="{{ p.brand }} {{ p.model }}" loading="lazy">
+            <div class="no-img" style="display:none"><i class="fas fa-mobile-alt"></i></div>
+          </div>
+        </a>
+        <div class="product-body">
+          <div class="product-brand">{{ p.brand }}</div>
+          <div class="product-name">{{ p.model }}</div>
+          <div class="product-desc">{{ p.description or '' }}</div>
+          <div class="product-footer">
+            <div>
+              <div class="product-price">KSh {{ '{:,.0f}'.format(p.price) }}</div>
+              {% if p.stock > 5 %}<span class="stock-ok"><i class="fas fa-check-circle"></i> In Stock</span>
+              {% elif p.stock > 0 %}<span class="stock-low"><i class="fas fa-exclamation-circle"></i> {{ p.stock }} left</span>
+              {% else %}<span class="stock-out">Out of Stock</span>{% endif %}
+            </div>
+            {% if p.stock > 0 %}
+            <form method="POST" action="{{ url_for('add_to_cart', item_id=p.id) }}" style="display:inline">
+              <input type="hidden" name="quantity" value="1">
+              <button type="submit" class="btn btn-gold btn-sm"><i class="fas fa-cart-plus"></i></button>
+            </form>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <i class="fas fa-mobile-alt"></i>
+      <p>No featured products yet.</p>
+    </div>
+    {% endif %}
+    <div class="text-center mt-4">
+      <a href="{{ url_for('products') }}" class="btn btn-dark btn-lg"><i class="fas fa-th"></i> View All Phones</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FEATURED ACCESSORIES ══════════════════════════════ -->
+<section class="section" style="background:var(--off-white)">
+  <div class="container">
+    <div class="section-header animate-up">
+      <span class="tag">Top Picks</span>
+      <h2>Popular Accessories</h2>
+      <p>Cases, chargers, earphones, power banks and more — everything to complete your setup.</p>
+    </div>
+    {% if featured_accessories %}
+    <div class="products-grid">
+      {% for a in featured_accessories %}
+      <div class="product-card animate-up">
+        <span class="product-badge" style="background:var(--black)">{{ a.category }}</span>
+        <a href="{{ url_for('accessory_detail', item_id=a.id) }}">
+          <div class="product-img">
+            <img src="{{ a.image_url or '' }}" alt="{{ a.name }}" loading="lazy">
+            <div class="no-img" style="display:none"><i class="fas fa-headphones-alt"></i></div>
+          </div>
+        </a>
+        <div class="product-body">
+          <div class="product-brand">{{ a.brand }}</div>
+          <div class="product-name">{{ a.name }}</div>
+          <div class="product-desc">{{ a.description or '' }}</div>
+          <div class="product-footer">
+            <div>
+              <div class="product-price">KSh {{ '{:,.0f}'.format(a.price) }}</div>
+              {% if a.stock > 0 %}<span class="stock-ok"><i class="fas fa-check-circle"></i> In Stock</span>
+              {% else %}<span class="stock-out">Out of Stock</span>{% endif %}
+            </div>
+            {% if a.stock > 0 %}
+            <form method="POST" action="{{ url_for('add_to_cart', item_id=a.id) }}" style="display:inline">
+              <input type="hidden" name="quantity" value="1">
+              <button type="submit" class="btn btn-dark btn-sm"><i class="fas fa-cart-plus"></i></button>
+            </form>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state"><i class="fas fa-headphones-alt"></i><p>No accessories yet.</p></div>
+    {% endif %}
+    <div class="text-center mt-4">
+      <a href="{{ url_for('accessories') }}" class="btn btn-dark btn-lg"><i class="fas fa-headphones-alt"></i> View All Accessories</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ BRAND CATEGORIES ═══════════════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="section-header animate-up">
+      <span class="tag">Browse by Brand</span>
+      <h2>Top Phone Brands</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px">
+      {% for brand, icon, color in [('Samsung','fa-mobile-alt','#1428A0'),('iPhone','fa-apple','#333'),('Tecno','fa-mobile','#E30016'),('Infinix','fa-mobile-screen','#0066CC'),('Xiaomi','fa-mobile-retro','#FF6900')] %}
+      <a href="{{ url_for('products', category=brand) }}" class="service-card animate-up" style="text-decoration:none;padding:24px 16px">
+        <div class="service-icon" style="background:{{ color }}1A;width:56px;height:56px;margin:0 auto 12px">
+          <i class="{% if 'fa-apple' in icon %}fab{% else %}fas{% endif %} {{ icon }}" style="color:{{ color }};font-size:1.4rem"></i>
+        </div>
+        <h3 style="font-size:.95rem;margin:0">{{ brand }}</h3>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ══ AIRTIME CTA ════════════════════════════════════════ -->
+<section class="section-sm" style="background:linear-gradient(135deg,#007A3D,#00A651)">
+  <div class="container" style="display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center;flex-wrap:wrap">
+    <div class="animate-up">
+      <h2 style="color:var(--white);font-size:1.8rem;margin-bottom:6px">Buy Airtime Instantly</h2>
+      <p style="color:rgba(255,255,255,.85)">Safaricom, Airtel & Telkom — pay via M-Pesa in seconds. No queues, no hassle.</p>
+    </div>
+    <a href="{{ url_for('airtime') }}" class="btn btn-outline-white btn-lg animate-up"><i class="fas fa-bolt"></i> Buy Airtime Now</a>
+  </div>
+</section>
+
+<!-- ══ WHY CHOOSE US ══════════════════════════════════════ -->
+<section class="section" style="background:var(--off-white)">
+  <div class="container">
+    <div class="section-header animate-up">
+      <span class="tag">Why Choose Us</span>
+      <h2>The Loska Difference</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px">
+      {% for icon, color, title, desc in [
+        ('fas fa-shield-alt','var(--gold-dark)','Genuine Products','All devices are 100% authentic with official manufacturer warranty.'),
+        ('fas fa-truck','#00A651','Fast Delivery','Same-day delivery within Nairobi. 2–3 days nationwide.'),
+        ('fas fa-headset','var(--gold-dark)','24/7 Support','Our team is always available via WhatsApp, phone, or email.'),
+        ('fas fa-tags','var(--gold-dark)','Best Prices','Competitive pricing with regular discounts and bundle deals.'),
+      ] %}
+      <div class="animate-up" style="text-align:center;padding:32px 20px;background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--gray-200);box-shadow:var(--shadow-sm);transition:all var(--transition)" onmouseover="this.style.borderColor='var(--gold)';this.style.boxShadow='0 6px 24px rgba(201,168,76,.2)'" onmouseout="this.style.borderColor='var(--gray-200)';this.style.boxShadow='var(--shadow-sm)'">
+        <div style="width:60px;height:60px;background:linear-gradient(135deg,var(--black),var(--black-soft));border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.4rem;color:var(--gold)">
+          <i class="{{ icon }}"></i>
+        </div>
+        <h3 style="font-size:1rem;margin-bottom:8px">{{ title }}</h3>
+        <p style="color:var(--gray-600);font-size:.875rem;line-height:1.6">{{ desc }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ══ PARTNERS STRIP ═════════════════════════════════════ -->
+<section class="section-sm" style="background:var(--black);border-top:2px solid rgba(201,168,76,.15)">
+  <div class="container">
+    <p style="text-align:center;color:rgba(255,255,255,.35);font-size:.75rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:24px">Trusted Brand Partners</p>
+    <div style="display:flex;justify-content:center;align-items:center;gap:36px;flex-wrap:wrap">
+      {% for brand, color in [('SAMSUNG','#1428A0'),('iPHONE','#555'),('TECNO','#E30016'),('INFINIX','#0066CC'),('XIAOMI','#FF6900'),('ANKER','#0069B4')] %}
+      <span style="font-family:'Syne',sans-serif;font-size:.85rem;font-weight:800;color:rgba(255,255,255,.3);letter-spacing:2px;transition:color var(--transition)" onmouseover="this.style.color='var(--gold-light)'" onmouseout="this.style.color='rgba(255,255,255,.3)'">{{ brand }}</span>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ══ REGISTER CTA ═══════════════════════════════════════ -->
+{% if not session.user_id %}
+<section class="section-sm" style="background:linear-gradient(135deg,var(--black),var(--black-mid));border-top:3px solid var(--gold)">
+  <div class="container" style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap">
+    <div class="animate-up">
+      <h2 style="color:var(--white);font-size:1.5rem;margin-bottom:4px">Ready to get started?</h2>
+      <p style="color:rgba(255,255,255,.6);font-size:.9rem">Create a free account to track orders and get exclusive deals.</p>
+    </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap" class="animate-up">
+      <a href="{{ url_for('register') }}" class="btn btn-gold"><i class="fas fa-user-plus"></i> Register Now</a>
+      <a href="{{ url_for('login') }}" class="btn btn-outline-white"><i class="fas fa-sign-in-alt"></i> Login</a>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Loska Communications Ltd{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<!-- ── TOP BAR ── -->
+<div class="topbar">
+  <div class="container">
+    <span><i class="fas fa-phone-alt"></i> +254 707222888</span>
+    <span><i class="fas fa-envelope"></i> info@loska.co.ke</span>
+    <span><i class="fas fa-map-marker-alt"></i> Nairobi, Kenya</span>
+    <span class="topbar-right">
+      <i class="fas fa-clock"></i> Mon–Sat 8am–8pm &nbsp;|&nbsp;
+      {% if session.user_id %}
+        <a href="{{ url_for('dashboard') }}">{{ session.name }}</a> &nbsp;|&nbsp;
+        <a href="{{ url_for('logout') }}">Logout</a>
+      {% else %}
+        <a href="{{ url_for('login') }}">Login</a> &nbsp;|&nbsp;
+        <a href="{{ url_for('register') }}">Register</a>
+      {% endif %}
+    </span>
+  </div>
+</div>
+
+<!-- ── NAVBAR ── -->
+<nav class="navbar" id="navbar">
+  <div class="container nav-inner">
+    <!-- LOGO -->
+    <a href="{{ url_for('home') }}" class="logo">
+      <img src="{{ url_for('static', filename='images/loska_logo.png') }}" alt="Loska Communications Ltd" onerror="this.style.display='none'">
+    </a>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="{{ url_for('home') }}" {% if request.endpoint=='home' %}class="active"{% endif %}>Home</a></li>
+
+      <li class="dropdown">
+        <a href="{{ url_for('products') }}" {% if request.endpoint in ['products','product_detail'] %}class="active"{% endif %}>
+          Phones <i class="fas fa-chevron-down" style="font-size:.65rem"></i>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="{{ url_for('products') }}">All Phones</a></li>
+          <li><a href="{{ url_for('products', category='Samsung') }}">Samsung</a></li>
+          <li><a href="{{ url_for('products', category='iPhone') }}">iPhone</a></li>
+          <li><a href="{{ url_for('products', category='Tecno') }}">Tecno</a></li>
+          <li><a href="{{ url_for('products', category='Infinix') }}">Infinix</a></li>
+          <li><a href="{{ url_for('products', category='Xiaomi') }}">Xiaomi</a></li>
+        </ul>
+      </li>
+
+      <li class="dropdown">
+        <a href="{{ url_for('accessories') }}" {% if request.endpoint in ['accessories','accessory_detail'] %}class="active"{% endif %}>
+          Accessories <i class="fas fa-chevron-down" style="font-size:.65rem"></i>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="{{ url_for('accessories') }}">All Accessories</a></li>
+          <li><a href="{{ url_for('accessories', category='Earphones') }}">Earphones</a></li>
+          <li><a href="{{ url_for('accessories', category='Chargers') }}">Chargers</a></li>
+          <li><a href="{{ url_for('accessories', category='Cases') }}">Cases</a></li>
+          <li><a href="{{ url_for('accessories', category='Power Banks') }}">Power Banks</a></li>
+          <li><a href="{{ url_for('accessories', category='Cables') }}">Cables</a></li>
+        </ul>
+      </li>
+
+      <li><a href="{{ url_for('airtime') }}" {% if request.endpoint=='airtime' %}class="active"{% endif %}>Airtime</a></li>
+      <li><a href="{{ url_for('services') }}" {% if request.endpoint=='services' %}class="active"{% endif %}>Services</a></li>
+      <li><a href="{{ url_for('about') }}" {% if request.endpoint=='about' %}class="active"{% endif %}>About Us</a></li>
+
+      <li class="dropdown">
+        <a href="#">More <i class="fas fa-chevron-down" style="font-size:.65rem"></i></a>
+        <ul class="dropdown-menu">
+          <li><a href="{{ url_for('our_team') }}"><i class="fas fa-users" style="color:var(--gold);width:18px"></i> Our Team</a></li>
+          <li><a href="{{ url_for('partners') }}"><i class="fas fa-handshake" style="color:var(--gold);width:18px"></i> Partners</a></li>
+          <li><a href="{{ url_for('faqs') }}"><i class="fas fa-question-circle" style="color:var(--gold);width:18px"></i> FAQs</a></li>
+          <li><a href="{{ url_for('contact') }}"><i class="fas fa-envelope" style="color:var(--gold);width:18px"></i> Contact Us</a></li>
+        </ul>
+      </li>
+
+      {% if session.role == 'admin' %}
+      <li><a href="{{ url_for('admin_dashboard') }}" style="color:var(--gold-dark);font-weight:700">
+        <i class="fas fa-shield-alt"></i> Admin
+      </a></li>
+      {% endif %}
+    </ul>
+
+    <div class="nav-actions">
+      <a href="{{ url_for('cart') }}" class="nav-icon cart-icon" title="Cart">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-badge" id="cartBadge">0</span>
+      </a>
+      {% if session.user_id %}
+      <a href="{{ url_for('dashboard') }}" class="nav-icon" title="My Account"><i class="fas fa-user-circle"></i></a>
+      {% else %}
+      <a href="{{ url_for('login') }}" class="btn btn-gold btn-sm" style="font-size:.8rem">Login</a>
+      {% endif %}
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ── FLASH MESSAGES ── -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  <div class="flash-container">
+    {% for cat, msg in messages %}
+    <div class="flash flash-{{ cat }}">
+      <i class="fas {% if cat=='success' %}fa-check-circle{% elif cat=='danger' %}fa-exclamation-circle{% elif cat=='warning' %}fa-exclamation-triangle{% else %}fa-info-circle{% endif %}"></i>
+      {{ msg }}
+      <button class="flash-close" onclick="this.parentElement.remove()">×</button>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+{% endwith %}
+
+<!-- ── MAIN ── -->
+<main>{% block content %}{% endblock %}</main>
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <div class="footer-gold-bar"></div>
+  <div class="footer-body">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <img src="{{ url_for('static', filename='images/loska_logo.png') }}" alt="Loska Communications" onerror="this.style.display='none'">
+        </div>
+        <p>Your trusted partner for mobile phones, accessories, and airtime services across Kenya. Quality products, unbeatable prices.</p>
+        <div class="social-links">
+          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" aria-label="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="{{ url_for('home') }}">Home</a></li>
+          <li><a href="{{ url_for('products') }}">Shop Phones</a></li>
+          <li><a href="{{ url_for('accessories') }}">Accessories</a></li>
+          <li><a href="{{ url_for('airtime') }}">Buy Airtime</a></li>
+          <li><a href="{{ url_for('services') }}">Our Services</a></li>
+          <li><a href="{{ url_for('about') }}">About Us</a></li>
+          <li><a href="{{ url_for('contact') }}">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="{{ url_for('our_team') }}">Our Team</a></li>
+          <li><a href="{{ url_for('partners') }}">Our Partners</a></li>
+          <li><a href="{{ url_for('faqs') }}">FAQs</a></li>
+          <li><a href="{{ url_for('register') }}">Register</a></li>
+          <li><a href="{{ url_for('login') }}">Login</a></li>
+          <li><a href="{{ url_for('dashboard') }}">My Account</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Contact Us</h4>
+        <ul class="contact-list">
+          <li><i class="fas fa-map-marker-alt"></i> Kiambu Ruiru, Kenya</li>
+          <li><i class="fas fa-phone-alt"></i> +254 707222888</li>
+          <li><i class="fas fa-envelope"></i> info@loska.co.ke</li>
+          <li><i class="fab fa-whatsapp"></i> WhatsApp: +254 700 000 000</li>
+          <li><i class="fas fa-clock"></i> Mon–Sat: 7:30 AM – 6:30 PM</li>
+        </ul>
+        <div class="payment-badges">
+          <span class="badge mpesa">M-PESA</span>
+          <span class="badge visa">VISA</span>
+          <span class="badge card">CASH</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-gold-bar" style="margin-top:0"></div>
+    <div class="footer-bottom">
+      <div class="container">
+        <p>&copy; {{ 2025 }} Loska Communications Ltd. All rights reserved.</p>
+        <p>Made with <i class="fas fa-heart" style="color:var(--gold)"></i> in Kenya</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

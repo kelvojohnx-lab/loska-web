@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Order Confirmed – Loska{% endblock %}
+{% block content %}
+<div class="confirmation-page"><div class="container">
+  <div class="confirmation-card">
+    <div class="confirmation-icon success"><i class="fas fa-check"></i></div>
+    <h2 style="color:var(--success);margin-bottom:8px">Order Placed!</h2>
+    <p style="color:var(--gray-600);margin-bottom:28px">Thank you for shopping with Loska Communications!</p>
+    <div style="background:var(--gold-pale);border:1px solid var(--gold);border-radius:var(--radius);padding:20px;text-align:left;margin-bottom:24px">
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--gray-200)"><span style="color:var(--gray-600);font-size:.875rem">Order Number</span><strong style="font-family:'Syne',sans-serif">#{{ order_id }}</strong></div>
+      {% if order %}
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--gray-200)"><span style="color:var(--gray-600);font-size:.875rem">Payment</span><span style="font-size:.875rem">{{ order.payment_method|upper }}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--gray-200)"><span style="color:var(--gray-600);font-size:.875rem">Total</span><strong>KSh {{ '{:,.0f}'.format(order.total_amount) }}</strong></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0"><span style="color:var(--gray-600);font-size:.875rem">Status</span><span class="status-badge status-{{ order.status }}">{{ order.status|replace('_',' ')|title }}</span></div>
+      {% endif %}
+    </div>
+    <div style="background:rgba(0,166,81,.06);border:1px solid rgba(0,166,81,.2);border-radius:var(--radius-sm);padding:14px;margin-bottom:24px;font-size:.875rem;color:var(--gray-600)">
+      <i class="fas fa-truck" style="color:var(--success)"></i>
+      We'll contact you to arrange delivery. Est: <strong>Same day (Nairobi) / 2–3 days (Nationwide)</strong>.
+    </div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a href="{{ url_for('dashboard') }}" class="btn btn-dark"><i class="fas fa-list"></i> My Orders</a>
+      <a href="{{ url_for('products') }}" class="btn btn-outline"><i class="fas fa-shopping-bag"></i> Continue Shopping</a>
+    </div>
+  </div>
+</div></div>
+{% endblock %}

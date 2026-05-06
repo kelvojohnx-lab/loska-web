@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}{{ action }} Phone – Loska Admin{% endblock %}
+{% block content %}
+<div class="admin-layout">
+  <aside class="admin-sidebar">
+    <div class="admin-brand"><img src="{{ url_for('static', filename='images/loska_logo.png') }}" alt="Loska" onerror="this.style.display='none'"><span>Admin Panel</span></div>
+    <nav class="admin-nav">
+      <div class="nav-section">Main</div><a href="{{ url_for('admin_dashboard') }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+      <div class="nav-section">Catalogue</div>
+      <a href="{{ url_for('admin_products') }}"><i class="fas fa-mobile-alt"></i> Phones</a>
+      <a href="{{ url_for('admin_add_product') }}" {% if action=='Add' %}class="active"{% endif %}><i class="fas fa-plus-circle"></i> Add Phone</a>
+      <a href="{{ url_for('admin_accessories') }}"><i class="fas fa-headphones-alt"></i> Accessories</a>
+      <a href="{{ url_for('admin_add_accessory') }}"><i class="fas fa-plus-circle"></i> Add Accessory</a>
+      <div class="nav-section">Sales</div>
+      <a href="{{ url_for('admin_orders') }}"><i class="fas fa-shopping-bag"></i> Orders</a>
+      <a href="{{ url_for('admin_airtime') }}"><i class="fas fa-sim-card"></i> Airtime</a>
+      <div class="nav-section">Account</div><a href="{{ url_for('home') }}"><i class="fas fa-globe"></i> View Site</a>
+      <a href="{{ url_for('logout') }}" style="color:#FCA5A5"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </nav>
+  </aside>
+  <div class="admin-main">
+    <div class="admin-topbar"><div><h2>{{ action }} Phone</h2></div><a href="{{ url_for('admin_products') }}" class="btn btn-outline btn-sm"><i class="fas fa-arrow-left"></i> Back</a></div>
+    <div style="display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start">
+      <div class="content-card">
+        <form method="POST" data-validate>
+          <div class="form-row">
+            <div class="form-group"><label>Brand <span>*</span></label>
+              <select class="form-control" name="brand" required>
+                <option value="">Select brand…</option>
+                {% for b in ['Samsung','iPhone','Tecno','Infinix','Xiaomi','Itel','Nokia','Other'] %}<option value="{{ b }}" {% if product and product.brand==b %}selected{% endif %}>{{ b }}</option>{% endfor %}
+              </select>
+            </div>
+            <div class="form-group"><label>Model Name <span>*</span></label><div class="input-group"><i class="fas fa-mobile-alt"></i><input type="text" class="form-control" name="model" placeholder="e.g. Galaxy S24 Ultra" value="{{ product.model if product else '' }}" required></div></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Price (KSh) <span>*</span></label><div class="input-group"><i class="fas fa-money-bill-wave"></i><input type="number" class="form-control" name="price" placeholder="45000" min="0" step="100" value="{{ product.price if product else '' }}" required></div></div>
+            <div class="form-group"><label>Stock Qty <span>*</span></label><div class="input-group"><i class="fas fa-boxes"></i><input type="number" class="form-control" name="stock" placeholder="10" min="0" value="{{ product.stock if product else '' }}" required></div></div>
+          </div>
+          <div class="form-group"><label>Description</label><textarea class="form-control" name="description" rows="3" placeholder="Display size, camera, battery…" style="resize:vertical">{{ product.description if product else '' }}</textarea></div>
+          <div class="form-group"><label>Image URL</label><div class="input-group"><i class="fas fa-image"></i><input type="url" class="form-control" name="image_url" placeholder="https://…" value="{{ product.image_url if product else '' }}" oninput="previewImg(this.value)"></div></div>
+          <div class="form-group"><label style="display:flex;align-items:center;gap:10px;cursor:pointer"><input type="checkbox" name="featured" style="width:18px;height:18px" {% if product and product.featured %}checked{% endif %}><span>Feature on home page</span></label></div>
+          <div style="display:flex;gap:12px"><button type="submit" class="btn btn-gold"><i class="fas fa-save"></i> {{ 'Add Phone' if action=='Add' else 'Save Changes' }}</button><a href="{{ url_for('admin_products') }}" class="btn btn-outline">Cancel</a></div>
+        </form>
+      </div>
+      <div class="content-card" style="text-align:center">
+        <h4 style="font-size:.85rem;color:var(--gray-400);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px">Preview</h4>
+        <div id="imgPreview" style="width:100%;height:180px;border-radius:var(--radius-sm);overflow:hidden;background:var(--gray-100);display:flex;align-items:center;justify-content:center;margin-bottom:10px">
+          {% if product and product.image_url %}<img src="{{ product.image_url }}" style="width:100%;height:100%;object-fit:cover">{% else %}<i class="fas fa-mobile-alt" style="font-size:2rem;color:var(--gray-400)"></i>{% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% block extra_js %}<script>function previewImg(url){const c=document.getElementById('imgPreview');c.innerHTML=url?`<img src="${url}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML='<i class=\\'fas fa-mobile-alt\\' style=\\'font-size:2rem;color:var(--gray-400)\\'></i>'">`:'<i class="fas fa-mobile-alt" style="font-size:2rem;color:var(--gray-400)"></i>';}</script>{% endblock %}
+{% endblock %}

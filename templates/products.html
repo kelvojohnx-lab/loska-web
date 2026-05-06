@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block title %}Shop Phones – Loska Communications{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <h1><i class="fas fa-mobile-alt" style="color:var(--gold)"></i> Shop Phones</h1>
+    <div class="breadcrumb"><a href="{{ url_for('home') }}">Home</a><span class="sep">/</span><span>Phones</span></div>
+  </div>
+</div>
+
+<section class="section-sm"><div class="container">
+  <div class="filters-bar">
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input type="text" id="searchInput" placeholder="Search brand or model…" value="{{ search }}">
+    </div>
+    <select class="filter-select" id="categoryFilter">
+      <option value="">All Brands</option>
+      {% for brand in ['Samsung','iPhone','Tecno','Infinix','Xiaomi'] %}
+      <option value="{{ brand }}" {% if category==brand %}selected{% endif %}>{{ brand }}</option>
+      {% endfor %}
+    </select>
+    <a href="{{ url_for('products') }}" class="btn btn-outline btn-sm"><i class="fas fa-undo"></i> Clear</a>
+  </div>
+
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px">
+    <a href="{{ url_for('products') }}" class="btn btn-sm {% if not category %}btn-dark{% else %}btn-outline{% endif %}">All</a>
+    {% for brand in ['Samsung','iPhone','Tecno','Infinix','Xiaomi'] %}
+    <a href="{{ url_for('products', category=brand) }}" class="btn btn-sm {% if category==brand %}btn-gold{% else %}btn-outline{% endif %}">{{ brand }}</a>
+    {% endfor %}
+  </div>
+
+  {% if products %}
+  <p style="color:var(--gray-400);font-size:.875rem;margin-bottom:20px">{{ products|length }} product{{ 's' if products|length!=1 }} found</p>
+  <div class="products-grid">
+    {% for p in products %}
+    <div class="product-card animate-up" data-brand="{{ p.brand }}" data-model="{{ p.model }}">
+      {% if p.stock > 0 %}<span class="product-badge">In Stock</span>
+      {% else %}<span class="product-badge out">Out of Stock</span>{% endif %}
+      <a href="{{ url_for('product_detail', product_id=p.id) }}">
+        <div class="product-img">
+          <img src="{{ p.image_url or '' }}" alt="{{ p.brand }} {{ p.model }}" loading="lazy">
+          <div class="no-img" style="display:none"><i class="fas fa-mobile-alt"></i></div>
+        </div>
+      </a>
+      <div class="product-body">
+        <div class="product-brand">{{ p.brand }}</div>
+        <div class="product-name">{{ p.model }}</div>
+        <div class="product-desc">{{ p.description or '' }}</div>
+        <div class="product-footer">
+          <div>
+            <div class="product-price">KSh {{ '{:,.0f}'.format(p.price) }}</div>
+            {% if p.stock > 5 %}<span class="stock-ok"><i class="fas fa-check-circle"></i> In Stock</span>
+            {% elif p.stock > 0 %}<span class="stock-low"><i class="fas fa-exclamation-circle"></i> {{ p.stock }} left</span>
+            {% else %}<span class="stock-out">Out of Stock</span>{% endif %}
+          </div>
+          {% if p.stock > 0 %}
+          <form method="POST" action="{{ url_for('add_to_cart', item_id=p.id) }}" style="display:inline">
+            <input type="hidden" name="quantity" value="1">
+            <button type="submit" class="btn btn-gold btn-sm"><i class="fas fa-cart-plus"></i></button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <i class="fas fa-mobile-alt"></i>
+    <p>No phones found. {% if category or search %}<a href="{{ url_for('products') }}" style="color:var(--gold-dark)">Clear filters</a>{% endif %}</p>
+  </div>
+  {% endif %}
+</div></section>
+{% endblock %}

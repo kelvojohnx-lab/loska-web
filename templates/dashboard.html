@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}My Dashboard – Loska{% endblock %}
+{% block content %}
+<div class="dashboard-header"><div class="container">
+  <div class="dashboard-welcome"><h1>Welcome back, {{ session.name }}! 👋</h1><p>Manage your orders, airtime transactions, and account settings.</p></div>
+  <div class="stats-row">
+    <div class="stat-card"><div class="label">Total Orders</div><div class="value">{{ orders|length }}</div><i class="fas fa-shopping-bag icon"></i></div>
+    <div class="stat-card"><div class="label">Airtime Purchases</div><div class="value">{{ airtime_txns|length }}</div><i class="fas fa-sim-card icon"></i></div>
+    <div class="stat-card"><div class="label">Total Spent</div><div class="value">KSh {{ '{:,.0f}'.format(orders|sum(attribute='total_amount') if orders else 0) }}</div><i class="fas fa-wallet icon"></i></div>
+  </div>
+</div></div>
+
+<section class="section-sm"><div class="container">
+  <div class="dashboard-grid">
+    <div class="sidebar">
+      <div style="text-align:center;padding:16px 0 20px;border-bottom:1px solid var(--gray-200);margin-bottom:12px">
+        <div style="width:64px;height:64px;background:linear-gradient(135deg,var(--black),var(--black-soft));border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:1.5rem;color:var(--gold);font-family:'Syne',sans-serif;font-weight:800">{{ session.name[0].upper() if session.name else 'U' }}</div>
+        <strong style="display:block;font-size:.95rem">{{ session.name }}</strong>
+        <span style="font-size:.78rem;color:var(--gray-400)">{{ session.email }}</span>
+      </div>
+      <ul class="sidebar-menu">
+        <li><a href="{{ url_for('dashboard') }}" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li><a href="#orders"><i class="fas fa-shopping-bag"></i> My Orders</a></li>
+        <li><a href="#airtime"><i class="fas fa-sim-card"></i> Airtime History</a></li>
+        <li><a href="{{ url_for('profile') }}"><i class="fas fa-user-edit"></i> Edit Profile</a></li>
+        <li><a href="{{ url_for('products') }}"><i class="fas fa-mobile-alt"></i> Shop Phones</a></li>
+        <li><a href="{{ url_for('airtime') }}"><i class="fas fa-bolt"></i> Buy Airtime</a></li>
+        <li style="border-top:1px solid var(--gray-200);margin-top:8px;padding-top:8px"><a href="{{ url_for('logout') }}" style="color:var(--danger)!important"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="content-card mb-3" id="orders">
+        <h3><i class="fas fa-shopping-bag" style="color:var(--gold)"></i> My Orders</h3>
+        {% if orders %}
+        <div style="overflow-x:auto"><table class="table">
+          <thead><tr><th>Order #</th><th>Date</th><th>Amount</th><th>Payment</th><th>Status</th><th></th></tr></thead>
+          <tbody>{% for o in orders|sort(attribute='order_date',reverse=True) %}
+          <tr>
+            <td><strong>#{{ o.id }}</strong></td><td>{{ o.order_date[:10] if o.order_date else '–' }}</td>
+            <td><strong>KSh {{ '{:,.0f}'.format(o.total_amount) }}</strong></td>
+            <td>{{ o.payment_method|upper }}</td>
+            <td><span class="status-badge status-{{ o.status }}">{{ o.status|replace('_',' ')|title }}</span></td>
+            <td>{% if o.status == 'pending_payment' %}<a href="{{ url_for('pay_mpesa', order_id=o.id) }}" class="btn btn-sm btn-gold">Pay Now</a>{% endif %}</td>
+          </tr>{% endfor %}
+          </tbody>
+        </table></div>
+        {% else %}<div class="empty-state" style="padding:32px"><i class="fas fa-shopping-bag"></i><p>No orders yet. <a href="{{ url_for('products') }}" style="color:var(--gold-dark)">Start shopping!</a></p></div>{% endif %}
+      </div>
+      <div class="content-card" id="airtime">
+        <h3><i class="fas fa-sim-card" style="color:var(--gold)"></i> Airtime Transactions</h3>
+        {% if airtime_txns %}
+        <div style="overflow-x:auto"><table class="table">
+          <thead><tr><th>Ref</th><th>Date</th><th>Phone</th><th>Network</th><th>Amount</th><th>Status</th></tr></thead>
+          <tbody>{% for t in airtime_txns|sort(attribute='date',reverse=True) %}
+          <tr>
+            <td><strong>{{ t.id }}</strong></td><td>{{ t.date[:10] if t.date else '–' }}</td>
+            <td>{{ t.phone_number }}</td><td>{{ t.network }}</td>
+            <td><strong>KSh {{ t.amount }}</strong></td>
+            <td><span class="status-badge status-{{ t.status }}">{{ t.status|title }}</span></td>
+          </tr>{% endfor %}
+          </tbody>
+        </table></div>
+        {% else %}<div class="empty-state" style="padding:32px"><i class="fas fa-sim-card"></i><p>No airtime purchases yet. <a href="{{ url_for('airtime') }}" style="color:var(--gold-dark)">Buy airtime now!</a></p></div>{% endif %}
+      </div>
+    </div>
+  </div>
+</div></section>
+{% endblock %}

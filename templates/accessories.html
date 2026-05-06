@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block title %}Accessories – Loska Communications{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <h1><i class="fas fa-headphones-alt" style="color:var(--gold)"></i> Phone Accessories</h1>
+    <div class="breadcrumb"><a href="{{ url_for('home') }}">Home</a><span class="sep">/</span><span>Accessories</span></div>
+  </div>
+</div>
+
+<section class="section-sm"><div class="container">
+  <div class="filters-bar">
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input type="text" id="searchInput" placeholder="Search accessories…" value="{{ search }}">
+    </div>
+    <select class="filter-select" id="categoryFilter">
+      <option value="">All Categories</option>
+      {% for cat in ['Earphones','Chargers','Cables','Cases','Screen Protectors','Power Banks','Wearables','Other'] %}
+      <option value="{{ cat }}" {% if category==cat %}selected{% endif %}>{{ cat }}</option>
+      {% endfor %}
+    </select>
+    <a href="{{ url_for('accessories') }}" class="btn btn-outline btn-sm"><i class="fas fa-undo"></i> Clear</a>
+  </div>
+
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px">
+    <a href="{{ url_for('accessories') }}" class="btn btn-sm {% if not category %}btn-dark{% else %}btn-outline{% endif %}">All</a>
+    {% for cat, icon in [('Earphones','fa-headphones'),('Chargers','fa-plug'),('Cables','fa-usb'),('Cases','fa-mobile-alt'),('Screen Protectors','fa-shield-alt'),('Power Banks','fa-battery-full'),('Wearables','fa-watch')] %}
+    <a href="{{ url_for('accessories', category=cat) }}" class="btn btn-sm {% if category==cat %}btn-gold{% else %}btn-outline{% endif %}">
+      <i class="fas {{ icon }}"></i> {{ cat }}
+    </a>
+    {% endfor %}
+  </div>
+
+  {% if accessories %}
+  <p style="color:var(--gray-400);font-size:.875rem;margin-bottom:20px">{{ accessories|length }} item{{ 's' if accessories|length!=1 }} found</p>
+  <div class="products-grid">
+    {% for a in accessories %}
+    <div class="product-card animate-up" data-brand="{{ a.brand }}" data-model="{{ a.name }}">
+      <span class="product-badge" style="background:var(--black)">{{ a.category }}</span>
+      {% if a.stock == 0 %}<span class="product-badge out" style="left:auto;right:14px">Sold Out</span>{% endif %}
+      <a href="{{ url_for('accessory_detail', item_id=a.id) }}">
+        <div class="product-img">
+          <img src="{{ a.image_url or '' }}" alt="{{ a.name }}" loading="lazy">
+          <div class="no-img" style="display:none"><i class="fas fa-headphones-alt"></i></div>
+        </div>
+      </a>
+      <div class="product-body">
+        <div class="product-brand">{{ a.brand }}</div>
+        <div class="product-name">{{ a.name }}</div>
+        <div class="product-desc">{{ a.description or '' }}</div>
+        {% if a.compatible %}<div style="font-size:.72rem;color:var(--gray-400);margin-bottom:10px"><i class="fas fa-check-circle" style="color:var(--success)"></i> {{ a.compatible }}</div>{% endif %}
+        <div class="product-footer">
+          <div>
+            <div class="product-price">KSh {{ '{:,.0f}'.format(a.price) }}</div>
+            {% if a.stock > 5 %}<span class="stock-ok"><i class="fas fa-check-circle"></i> In Stock</span>
+            {% elif a.stock > 0 %}<span class="stock-low"><i class="fas fa-exclamation-circle"></i> {{ a.stock }} left</span>
+            {% else %}<span class="stock-out">Out of Stock</span>{% endif %}
+          </div>
+          {% if a.stock > 0 %}
+          <form method="POST" action="{{ url_for('add_to_cart', item_id=a.id) }}" style="display:inline">
+            <input type="hidden" name="quantity" value="1">
+            <button type="submit" class="btn btn-dark btn-sm"><i class="fas fa-cart-plus"></i></button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state" style="padding:80px 20px">
+    <i class="fas fa-headphones-alt" style="font-size:4rem;color:var(--gray-200)"></i>
+    <h3 style="margin:16px 0 8px">No accessories found</h3>
+    <p style="color:var(--gray-600);margin-bottom:24px">{% if category or search %}Try clearing your filters.{% else %}No accessories in stock yet.{% endif %}</p>
+    {% if category or search %}<a href="{{ url_for('accessories') }}" class="btn btn-outline">Clear Filters</a>{% endif %}
+  </div>
+  {% endif %}
+</div></section>
+{% endblock %}

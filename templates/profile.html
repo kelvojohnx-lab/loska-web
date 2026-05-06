@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}My Profile – Loska{% endblock %}
+{% block content %}
+<div class="page-header"><div class="container"><h1>Edit Profile</h1></div></div>
+<section class="section-sm"><div class="container"><div class="form-card" style="max-width:560px;border-top:4px solid var(--gold)">
+  <h2 class="form-title">Profile Settings</h2>
+  <p class="form-subtitle">Update your personal information</p>
+  <form method="POST" data-validate>
+    <div class="form-group"><label>Full Name</label><div class="input-group"><i class="fas fa-user"></i><input type="text" class="form-control" name="name" value="{{ user.name or '' }}" required></div></div>
+    <div class="form-group"><label>Email</label><div class="input-group"><i class="fas fa-envelope"></i><input type="email" class="form-control" value="{{ user.email or '' }}" disabled style="background:var(--gray-100)"></div><div class="form-hint">Email cannot be changed</div></div>
+    <div class="form-group"><label>Phone Number</label><div class="input-group"><i class="fas fa-phone-alt"></i><input type="tel" class="form-control" name="phone" value="{{ user.phone or '' }}" placeholder="07XX XXX XXX"></div></div>
+    <button type="submit" class="btn btn-gold"><i class="fas fa-save"></i> Save Changes</button>
+  </form>
+</div></div></section>
+{% endblock %}

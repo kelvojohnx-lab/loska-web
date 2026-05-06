@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}{{ item.name if item else 'Accessory' }} – Loska{% endblock %}
+{% block content %}
+<div class="page-header"><div class="container">
+  <div class="breadcrumb"><a href="{{ url_for('home') }}">Home</a><span class="sep">/</span><a href="{{ url_for('accessories') }}">Accessories</a><span class="sep">/</span><span>{{ item.name if item else '' }}</span></div>
+</div></div>
+<section class="section-sm"><div class="container">
+{% if item %}
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start">
+  <div><div style="border-radius:var(--radius-lg);overflow:hidden;border:2px solid var(--gray-200);background:var(--off-white);display:flex;align-items:center;justify-content:center;height:380px">
+    <img src="{{ item.image_url or '' }}" alt="{{ item.name }}" style="max-height:360px;object-fit:contain" onerror="this.src='https://via.placeholder.com/400x360?text=Accessory'">
+  </div></div>
+  <div>
+    <span style="display:inline-block;background:var(--black);color:var(--gold);font-size:.72rem;font-weight:800;padding:4px 12px;border-radius:99px;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px">{{ item.category }}</span>
+    <div class="product-brand" style="font-size:.75rem;margin-bottom:6px">{{ item.brand }}</div>
+    <h1 style="font-size:1.8rem;margin-bottom:16px">{{ item.name }}</h1>
+    <div style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--black);margin-bottom:12px">KSh {{ '{:,.0f}'.format(item.price) }}</div>
+    {% if item.stock > 5 %}<span class="stock-ok"><i class="fas fa-check-circle"></i> In Stock ({{ item.stock }} available)</span>
+    {% elif item.stock > 0 %}<span class="stock-low"><i class="fas fa-exclamation-circle"></i> Only {{ item.stock }} left!</span>
+    {% else %}<span class="stock-out"><i class="fas fa-times-circle"></i> Out of Stock</span>{% endif %}
+    <p style="color:var(--gray-600);line-height:1.7;margin:20px 0">{{ item.description or 'No description available.' }}</p>
+    {% if item.compatible %}
+    <div style="background:var(--gold-pale);border:1px solid var(--gold);border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:20px;font-size:.875rem">
+      <i class="fas fa-check-circle" style="color:var(--success)"></i> <strong>Compatible with:</strong> {{ item.compatible }}
+    </div>
+    {% endif %}
+    {% if item.stock > 0 %}
+    <form method="POST" action="{{ url_for('add_to_cart', item_id=item.id) }}">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+        <label style="font-size:.875rem;font-weight:600">Qty:</label>
+        <div class="qty-control">
+          <button type="button" class="qty-btn" data-action="dec">−</button>
+          <input type="number" class="qty-input" name="quantity" value="1" min="1" max="{{ item.stock }}">
+          <button type="button" class="qty-btn" data-action="inc">+</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <button type="submit" class="btn btn-gold btn-lg"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+        <a href="{{ url_for('cart') }}" class="btn btn-outline btn-lg"><i class="fas fa-shopping-cart"></i> View Cart</a>
+      </div>
+    </form>
+    {% endif %}
+    <div style="margin-top:24px;padding:16px;background:var(--gold-pale);border-radius:var(--radius-sm);border:1px solid var(--gold);display:flex;gap:20px;font-size:.8rem;flex-wrap:wrap">
+      <span><i class="fas fa-shield-alt" style="color:var(--gold-dark)"></i> Warranty Included</span>
+      <span><i class="fas fa-truck" style="color:var(--gold-dark)"></i> Fast Delivery</span>
+      <span><i class="fas fa-undo" style="color:var(--gold-dark)"></i> 7-Day Returns</span>
+    </div>
+  </div>
+</div>
+{% else %}<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Accessory not found.</p><a href="{{ url_for('accessories') }}" class="btn btn-gold mt-3">Back to Accessories</a></div>{% endif %}
+</div></section>
+{% endblock %}

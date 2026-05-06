@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block title %}Our Services – Loska Communications Ltd{% endblock %}
+{% block content %}
+
+<div class="info-hero">
+  <div class="container">
+    <span class="tag">What We Do</span>
+    <h1>Our Services</h1>
+    <p>Comprehensive telecommunications and electronics services designed to keep you connected and equipped.</p>
+  </div>
+</div>
+<div class="gold-divider"></div>
+
+<section class="section">
+  <div class="container">
+    <div class="section-header animate-up">
+      <span class="tag">Core Offerings</span>
+      <h2>Everything You Need in One Place</h2>
+      <p>From device sales to after-sales support — we've got you covered.</p>
+    </div>
+
+```
+<div style="display:grid;gap:40px">
+  {% for icon, title, desc, features in [
+    ('fas fa-mobile-alt','Phone Sales','We stock the latest smartphones.',['Samsung, iPhone, Tecno, Infinix, Xiaomi','Flagship & budget models','Warranty included','Online & in-store','M-Pesa, card, cash']),
+    ('fas fa-headphones-alt','Accessories Sales','Wide range of accessories.',['Earphones & headphones','Chargers & power banks','Cases & protectors','Genuine products','Bulk orders']),
+    ('fas fa-sim-card','Airtime & Data','Instant top-up services.',['Safaricom, Airtel, Telkom','Pay via M-Pesa','All bundle sizes','24/7 service','Tracking available']),
+    ('fas fa-tools','Device Repair','Expert support services.',['Screen replacement','Battery replacement','Software fixes','Data backup','Free diagnosis']),
+    ('fas fa-truck','Delivery','Fast delivery across Kenya.',['Same-day Nairobi','Nationwide 2–3 days','Tracking','Secure packaging','Affordable rates']),
+    ('fas fa-headset','After-Sales','Customer support.',['7-day return','Warranty support','WhatsApp help','Order tracking','Free setup'])
+  ] %}
+  
+  <div style="display:grid;grid-template-columns:{% if loop.index % 2 == 0 %}1.2fr 1fr{% else %}1fr 1.2fr{% endif %};gap:48px;align-items:center" class="animate-up">
+    
+    {% if loop.index % 2 != 0 %}
+    <!-- LEFT CARD -->
+    <div style="background:linear-gradient(135deg,var(--black),var(--black-mid));padding:40px;border-radius:12px;color:white;text-align:center">
+      <i class="{{ icon }}" style="font-size:2rem;color:gold"></i>
+      <h2>{{ title }}</h2>
+      <p>{{ desc }}</p>
+    </div>
+
+    <div>
+      <ul>
+        {% for f in features %}
+        <li>{{ f }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    {% else %}
+    <!-- RIGHT CARD -->
+    <div>
+      <ul>
+        {% for f in features %}
+        <li>{{ f }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div style="background:linear-gradient(135deg,var(--black),var(--black-mid));padding:40px;border-radius:12px;color:white;text-align:center">
+      <i class="{{ icon }}" style="font-size:2rem;color:gold"></i>
+      <h2>{{ title }}</h2>
+      <p>{{ desc }}</p>
+    </div>
+    {% endif %}
+  </div>
+
+  {% endfor %}
+</div>
+```
+
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Register – Loska Communications{% endblock %}
+{% block content %}
+<div class="auth-page"><div class="auth-wrapper">
+  <div class="form-card" style="border-top:4px solid var(--gold)">
+    <div style="text-align:center;margin-bottom:28px">
+      <img src="{{ url_for('static', filename='images/loska_logo.png') }}" alt="Loska" style="height:52px;margin:0 auto 16px" onerror="this.style.display='none'">
+      <h2 class="form-title">Create Account</h2>
+      <p class="form-subtitle">Join Loska Communications today</p>
+    </div>
+    <form method="POST" data-validate>
+      <div class="form-group"><label>Full Name <span>*</span></label><div class="input-group"><i class="fas fa-user"></i><input type="text" class="form-control" name="name" placeholder="John Kamau" required></div></div>
+      <div class="form-group"><label>Email Address <span>*</span></label><div class="input-group"><i class="fas fa-envelope"></i><input type="email" class="form-control" name="email" placeholder="your@email.com" required></div></div>
+      <div class="form-group"><label>Password <span>*</span></label><div class="input-group"><i class="fas fa-lock"></i><input type="password" class="form-control" name="password" placeholder="Min. 8 characters" required minlength="8"></div></div>
+      <button type="submit" class="btn btn-gold btn-block btn-lg mt-2"><i class="fas fa-user-plus"></i> Create Account</button>
+    </form>
+    <div class="divider">or</div>
+    <p style="text-align:center;color:var(--gray-600);font-size:.9rem">Already have an account? <a href="{{ url_for('login') }}" style="color:var(--gold-dark);font-weight:600">Login here</a></p>
+  </div>
+</div></div>
+{% endblock %}

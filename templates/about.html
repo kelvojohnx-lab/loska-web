@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}About Us – Loska Communications Ltd{% endblock %}
+{% block content %}
+
+<div class="info-hero">
+  <div class="container">
+    <span class="tag">Who We Are</span>
+    <h1>About Loska Communications</h1>
+    <p>Kenya's trusted destination for smartphones and accessories.</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <h2>Our Story</h2>
+    <p>
+      Loska Communications was founded to make quality mobile technology accessible to every Kenyan.
+      We provide genuine phones, accessories, and excellent service.
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2>Our Achievements</h2>
+
+```
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
+  {% for item in [
+    ('2018','Founded'),
+    ('10K+','Customers'),
+    ('500+','Products'),
+    ('5★','Rating')
+  ] %}
+  <div style="padding:20px;background:#111;color:white;text-align:center;border-radius:10px">
+    <h3>{{ item[0] }}</h3>
+    <p>{{ item[1] }}</p>
+  </div>
+  {% endfor %}
+</div>
+```
+
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2>Mission, Vision & Values</h2>
+
+```
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+  {% for item in [
+    ('Mission','Provide affordable tech'),
+    ('Vision','Be #1 in East Africa'),
+    ('Values','Integrity & quality')
+  ] %}
+  <div style="background:#f5f5f5;padding:20px;border-radius:10px">
+    <h3>{{ item[0] }}</h3>
+    <p>{{ item[1] }}</p>
+  </div>
+  {% endfor %}
+</div>
+```
+
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %}Orders – Loska Admin{% endblock %}
+{% block content %}
+<div class="admin-layout">
+  <aside class="admin-sidebar">
+    <div class="admin-brand"><img src="{{ url_for('static', filename='images/loska_logo.png') }}" alt="Loska" onerror="this.style.display='none'"><span>Admin Panel</span></div>
+    <nav class="admin-nav">
+      <div class="nav-section">Main</div><a href="{{ url_for('admin_dashboard') }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+      <div class="nav-section">Catalogue</div>
+      <a href="{{ url_for('admin_products') }}"><i class="fas fa-mobile-alt"></i> Phones</a>
+      <a href="{{ url_for('admin_add_product') }}"><i class="fas fa-plus-circle"></i> Add Phone</a>
+      <a href="{{ url_for('admin_accessories') }}"><i class="fas fa-headphones-alt"></i> Accessories</a>
+      <a href="{{ url_for('admin_add_accessory') }}"><i class="fas fa-plus-circle"></i> Add Accessory</a>
+      <div class="nav-section">Sales</div>
+      <a href="{{ url_for('admin_orders') }}" class="active"><i class="fas fa-shopping-bag"></i> Orders</a>
+      <a href="{{ url_for('admin_airtime') }}"><i class="fas fa-sim-card"></i> Airtime</a>
+      <div class="nav-section">Account</div>
+      <a href="{{ url_for('home') }}"><i class="fas fa-globe"></i> View Site</a>
+      <a href="{{ url_for('logout') }}" style="color:#FCA5A5"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </nav>
+  </aside>
+  <div class="admin-main">
+    <div class="admin-topbar"><div><h2>Orders</h2><p style="color:var(--gray-400);font-size:.85rem">{{ orders|length }} total orders</p></div></div>
+
+    <!-- Status summary pills -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:24px">
+      {% for s, label in [('pending_payment','Pending'),('paid','Paid'),('processing','Processing'),('shipped','Shipped'),('delivered','Delivered'),('cancelled','Cancelled')] %}
+      {% set count = orders | selectattr('status','equalto',s) | list | length %}
+      <div style="background:var(--white);border-radius:var(--radius-sm);padding:14px 16px;border:1px solid var(--gray-200);border-top:3px solid var(--gold);text-align:center">
+        <div style="font-size:1.4rem;font-weight:800;font-family:'Syne',sans-serif">{{ count }}</div>
+        <div style="font-size:.72rem;color:var(--gray-400);text-transform:uppercase;letter-spacing:.5px">{{ label }}</div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="admin-table-card">
+      <div class="table-header"><h3>All Orders</h3><input type="text" id="orderSearch" placeholder="Search orders…" class="form-control" style="width:220px;padding:8px 12px;font-size:.85rem"></div>
+      {% if orders %}
+      <div style="overflow-x:auto"><table class="table" id="ordersTable">
+        <thead><tr><th>Order #</th><th>Customer</th><th>Phone</th><th>Address</th><th>Amount</th><th>Payment</th><th>Status</th><th>Date</th><th>Update</th></tr></thead>
+        <tbody>
+          {% for o in orders|sort(attribute='order_date', reverse=True) %}
+          <tr>
+            <td><strong>#{{ o.id }}</strong></td>
+            <td>{{ o.user_name or '–' }}</td>
+            <td>{{ o.phone or '–' }}</td>
+            <td style="max-width:130px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ o.address or '–' }}</td>
+            <td><strong>KSh {{ '{:,.0f}'.format(o.total_amount) }}</strong></td>
+            <td><span style="text-transform:uppercase;font-size:.75rem;font-weight:700">{{ o.payment_method }}</span></td>
+            <td><span class="status-badge status-{{ o.status }}">{{ o.status|replace('_',' ')|title }}</span></td>
+            <td>{{ o.order_date[:10] if o.order_date else '–' }}</td>
+            <td>
+              <form method="POST" action="{{ url_for('update_order_status', order_id=o.id) }}" style="display:flex;gap:6px;align-items:center">
+                <select name="status" class="form-control" style="padding:5px 8px;font-size:.8rem;width:130px">
+                  {% for s in ['pending_payment','paid','processing','shipped','delivered','cancelled'] %}
+                  <option value="{{ s }}" {% if o.status==s %}selected{% endif %}>{{ s|replace('_',' ')|title }}</option>
+                  {% endfor %}
+                </select>
+                <button type="submit" class="btn btn-sm btn-gold"><i class="fas fa-check"></i></button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table></div>
+      {% else %}
+      <div class="empty-state" style="padding:60px"><i class="fas fa-shopping-bag"></i><p>No orders yet.</p></div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% block extra_js %}<script>document.getElementById('orderSearch')?.addEventListener('input',function(){const q=this.value.toLowerCase();document.querySelectorAll('#ordersTable tbody tr').forEach(row=>{row.style.display=row.textContent.toLowerCase().includes(q)?'':'none';});});</script>{% endblock %}
+{% endblock %}

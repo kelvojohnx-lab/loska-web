@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+{% block title %}Contact Us – Loska Communications Ltd{% endblock %}
+{% block content %}
+
+<div class="info-hero">
+  <div class="container">
+    <span class="tag">Get in Touch</span>
+    <h1>Contact Us</h1>
+    <p>We'd love to hear from you. Reach out for product enquiries, support, partnerships, or just to say hello!</p>
+  </div>
+</div>
+<div class="gold-divider"></div>
+
+<section class="section">
+  <div class="container">
+    <div class="contact-grid">
+      <!-- Contact Info -->
+      <div>
+        <div class="contact-info-card animate-up">
+          <h3><i class="fas fa-address-book" style="color:var(--gold);margin-right:10px"></i>Contact Information</h3>
+
+          <div class="contact-item">
+            <div class="ci-icon"><i class="fas fa-map-marker-alt"></i></div>
+            <div class="ci-text">
+              <label>Physical Address</label>
+              <span>Loska Communications Ltd<br>Ruiru, Kiambu<br>Kiambu, Kenya</span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="ci-icon"><i class="fas fa-phone-alt"></i></div>
+            <div class="ci-text">
+              <label>Phone</label>
+              <a href="tel:+254700000000">+254 707222888
+              </a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="ci-icon"><i class="fab fa-whatsapp"></i></div>
+            <div class="ci-text">
+              <label>WhatsApp</label>
+              <a href="https://wa.me/254700000000" target="_blank">+254 707222888</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="ci-icon"><i class="fas fa-envelope"></i></div>
+            <div class="ci-text">
+              <label>Email</label>
+              <a href="mailto:info@loska.co.ke">info@loska.co.ke</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="ci-icon"><i class="fas fa-clock"></i></div>
+            <div class="ci-text">
+              <label>Business Hours</label>
+              <span>Monday – Friday: 7:00 AM – 6:00 PM<br>Saturday: 8:00 AM – 8:00 PM<br>Sunday: 10:00 AM – 4:00 PM</span>
+            </div>
+          </div>
+
+          <div style="border-top:1px solid rgba(201,168,76,.2);margin-top:24px;padding-top:24px">
+            <label style="font-size:.75rem;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:12px">Follow Us</label>
+            <div class="social-links">
+              <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+              <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+              <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+              <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="animate-up" style="animation-delay:.1s">
+        <div class="form-card">
+          <h2 class="form-title">Send Us a Message</h2>
+          <p class="form-subtitle">Fill out the form below and we'll get back to you within 24 hours.</p>
+
+          {% if request.method == 'POST' and request.form.get('sent') %}
+          <div class="alert alert-success">
+            <i class="fas fa-check-circle"></i> Thank you! Your message has been sent. We'll respond within 24 hours.
+          </div>
+          {% endif %}
+
+          <form method="POST" data-validate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="fname">First Name <span>*</span></label>
+                <div class="input-group"><i class="fas fa-user"></i>
+                  <input type="text" class="form-control" id="fname" name="fname" placeholder="John" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="lname">Last Name <span>*</span></label>
+                <div class="input-group"><i class="fas fa-user"></i>
+                  <input type="text" class="form-control" id="lname" name="lname" placeholder="Kamau" required>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="cemail">Email Address <span>*</span></label>
+              <div class="input-group"><i class="fas fa-envelope"></i>
+                <input type="email" class="form-control" id="cemail" name="email" placeholder="john@example.com" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="cphone">Phone Number</label>
+              <div class="input-group"><i class="fas fa-phone-alt"></i>
+                <input type="tel" class="form-control" id="cphone" name="phone" placeholder="+254 7XX XXX XXX">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="subject">Subject <span>*</span></label>
+              <select class="form-control" id="subject" name="subject" required>
+                <option value="">Select subject…</option>
+                <option>Product Enquiry</option>
+                <option>Order Support</option>
+                <option>Returns & Warranty</option>
+                <option>Partnership Enquiry</option>
+                <option>Careers / CV Submission</option>
+                <option>Technical Support</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="message">Message <span>*</span></label>
+              <textarea class="form-control" id="message" name="message" rows="5"
+                placeholder="Tell us how we can help you…" required style="resize:vertical"></textarea>
+            </div>
+            <button type="submit" class="btn btn-gold btn-block btn-lg mt-2">
+              <i class="fas fa-paper-plane"></i> Send Message
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Map placeholder -->
+<section class="section-sm" style="background:var(--off-white);padding-top:0">
+  <div class="container">
+    <div class="section-header animate-up" style="margin-bottom:24px">
+      <span class="tag">Find Us</span>
+      <h2>Our Location</h2>
+    </div>
+    <div style="border-radius:var(--radius-lg);overflow:hidden;border:2px solid var(--gold);box-shadow:var(--shadow-gold)">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.8189329939085!2d36.8219!3d-1.2864!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMcKwMTcnMTEuMCJTIDM2wrA0OScxOC44IkU!5e0!3m2!1sen!2ske!4v1234567890"
+        width="100%" height="380" style="border:0;display:block" allowfullscreen="" loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+    <p style="text-align:center;color:var(--gray-400);font-size:.8rem;margin-top:10px">
+      <i class="fas fa-map-marker-alt" style="color:var(--gold)"></i>
+      Ruiru, Kiambu, Kenya — Near Family Bank.
+    </p>
+  </div>
+</section>
+
+{% block extra_js %}
+<script>
+// Simple contact form handler
+document.querySelector('form[data-validate]')?.addEventListener('submit', function(e) {
+  e.preventDefault();
+  const btn = this.querySelector('button[type=submit]');
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending…';
+  btn.disabled = true;
+  setTimeout(() => {
+    this.innerHTML = `<div class="alert alert-success" style="text-align:center;padding:20px">
+      <i class="fas fa-check-circle" style="font-size:2rem;display:block;margin-bottom:8px;color:var(--success)"></i>
+      <strong>Message Sent Successfully!</strong><br>
+      <span style="font-size:.9rem">Thank you for reaching out. Our team will respond within 24 hours.</span>
+    </div>`;
+  }, 1500);
+});
+</script>
+{% endblock %}
+{% endblock %}

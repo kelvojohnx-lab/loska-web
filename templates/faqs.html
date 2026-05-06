@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% block title %}FAQs – Loska Communications Ltd{% endblock %}
+{% block content %}
+
+<div class="info-hero">
+  <div class="container">
+    <span class="tag">Got Questions?</span>
+    <h1>Frequently Asked Questions</h1>
+    <p>Find answers to our most commonly asked questions about products, orders, payments, and more.</p>
+  </div>
+</div>
+<div class="gold-divider"></div>
+
+<section class="section">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:220px 1fr;gap:48px;align-items:start">
+      <!-- Category Nav -->
+      <div style="position:sticky;top:90px">
+        <div class="content-card" style="padding:20px">
+          <h4 style="font-size:.85rem;color:var(--gray-400);text-transform:uppercase;letter-spacing:1px;margin-bottom:16px">Categories</h4>
+          <ul style="display:grid;gap:4px">
+            {% for cat in ['All','Orders & Shipping','Payments','Products','Airtime','Returns & Warranty','Account'] %}
+            <li>
+              <a href="#{{ cat|lower|replace(' & ','_')|replace(' ','_') }}"
+                 style="display:block;padding:9px 12px;border-radius:var(--radius-sm);font-size:.875rem;font-weight:500;color:var(--gray-600);transition:all var(--transition)"
+                 onmouseover="this.style.background='var(--gold-pale)';this.style.color='var(--black)'"
+                 onmouseout="this.style.background='transparent';this.style.color='var(--gray-600)'">
+                {{ cat }}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+
+      <!-- FAQ List -->
+      <div>
+        {% set faqs = [
+          ('Orders & Shipping','orders_shipping',[
+            ('How do I place an order?','Browse our phones or accessories, add items to your cart, proceed to checkout, fill in your delivery details, and choose a payment method. You\'ll receive an order confirmation instantly.'),
+            ('How long does delivery take?','Within Nairobi CBD: Same day or next day. Other Nairobi areas: 1–2 business days. Nationwide (all counties): 2–4 business days. Express options are available at checkout.'),
+            ('Do you deliver across Kenya?','Yes! We deliver to all 47 counties in Kenya. Delivery costs vary by location and are calculated at checkout.'),
+            ('Can I track my order?','Yes. Once your order is dispatched, you will receive an SMS and email with tracking information. You can also track it from your account dashboard.'),
+            ('What if my item arrives damaged?','Contact us within 24 hours of delivery with photos of the damage. We will arrange a replacement or full refund immediately.'),
+          ]),
+          ('Payments','payments',[
+            ('What payment methods do you accept?','We accept M-Pesa (STK Push), Visa/Mastercard debit and credit cards, and Cash on Delivery for select areas.'),
+            ('Is M-Pesa payment instant?','Yes. Once you confirm the M-Pesa prompt on your phone, your payment is processed instantly and your order is confirmed.'),
+            ('Is it safe to pay online on your website?','Absolutely. All transactions are encrypted with SSL. We do not store card details on our servers.'),
+            ('Can I pay in installments?','We are working on a buy-now-pay-later option. Currently, full payment is required at checkout. Follow our social media for updates.'),
+            ('What happens if M-Pesa deducts but order fails?','This is rare but if it happens, contact us immediately. We will verify and either confirm your order or process a full refund within 24 hours.'),
+          ]),
+          ('Products','products',[
+            ('Are all your phones genuine?','Yes. 100% of our phones are genuine, original devices from authorized distributors. All come with official manufacturer warranties.'),
+            ('Do your phones come with a warranty?','Yes. All smartphones come with a minimum 1-year manufacturer warranty. Accessories have a 6-month warranty.'),
+            ('Can I request a specific phone model not listed?','Yes! Contact us via WhatsApp or email and we will do our best to source it for you.'),
+            ('Do you sell refurbished phones?','We currently only sell brand new, sealed phones. We may introduce certified refurbished options in the future.'),
+            ('Can I compare phones before buying?','Yes. Visit our store in Nairobi or use our website to compare specs. Our team is also available to advise you.'),
+          ]),
+          ('Airtime','airtime',[
+            ('Which networks do you support for airtime?','We support Safaricom, Airtel Kenya, and Telkom Kenya airtime purchases.'),
+            ('How quickly is airtime delivered?','Airtime is delivered instantly to the recipient\'s number upon successful payment.'),
+            ('What is the minimum airtime purchase?','The minimum purchase is KSh 10. There is no maximum limit.'),
+            ('Can I buy airtime for someone else?','Yes. Simply enter the recipient\'s phone number during the purchase — it does not have to be your own number.'),
+          ]),
+          ('Returns & Warranty','returns_warranty',[
+            ('What is your return policy?','We accept returns within 7 days of purchase if the item is in original condition, unused, and with all original packaging.'),
+            ('How do I initiate a return?','Contact our customer service team via WhatsApp (+254 700 000 000) or email (returns@loska.co.ke) with your order number and reason for return.'),
+            ('Who pays for return shipping?','If the item is defective or we made an error, we cover return shipping. For change-of-mind returns, the customer covers shipping costs.'),
+            ('How long does a warranty claim take?','We process warranty claims within 3–5 business days. Complex repairs may take up to 14 days.'),
+          ]),
+          ('Account','account',[
+            ('How do I create an account?','Click "Register" on the navigation bar, fill in your name, email, and password — it takes less than a minute.'),
+            ('I forgot my password. What do I do?','Currently, please contact our support team via WhatsApp or email and we will reset your password for you.'),
+            ('Can I order without an account?','An account is recommended so you can track orders and view history. Guest checkout may be available in the future.'),
+            ('How do I update my profile information?','Log in to your account, click your name in the navigation bar, and go to "Edit Profile" from your dashboard.'),
+          ]),
+        ] %}
+
+        {% for category, anchor, items in faqs %}
+        <div id="{{ anchor }}" style="margin-bottom:40px">
+          <h3 style="font-size:1.1rem;color:var(--gold-dark);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--gold-pale);display:flex;align-items:center;gap:10px">
+            <span style="width:32px;height:32px;background:var(--gold-pale);border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-size:.9rem">
+              <i class="fas fa-chevron-right" style="color:var(--gold-dark)"></i>
+            </span>
+            {{ category }}
+          </h3>
+          <div class="faq-list" style="max-width:100%">
+            {% for q, a in items %}
+            <div class="faq-item animate-up">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                {{ q }}
+                <i class="fas fa-chevron-down"></i>
+              </button>
+              <div class="faq-answer">{{ a }}</div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+
+        <!-- Still have questions -->
+        <div style="background:linear-gradient(135deg,var(--black),var(--black-mid));border-radius:var(--radius-lg);padding:36px;text-align:center;border-bottom:3px solid var(--gold);margin-top:20px">
+          <i class="fas fa-comments" style="font-size:2rem;color:var(--gold);margin-bottom:16px;display:block"></i>
+          <h3 style="color:var(--white);margin-bottom:8px">Still Have Questions?</h3>
+          <p style="color:rgba(255,255,255,.65);font-size:.9rem;margin-bottom:20px">Can't find what you're looking for? Our team is ready to help.</p>
+          <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+            <a href="{{ url_for('contact') }}" class="btn btn-gold"><i class="fas fa-envelope"></i> Contact Us</a>
+            <a href="https://wa.me/254700000000" class="btn btn-outline-white" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% block extra_js %}
+<script>
+function toggleFaq(btn) {
+  const answer = btn.nextElementSibling;
+  const isOpen = btn.classList.contains('open');
+  document.querySelectorAll('.faq-question.open').forEach(b => {
+    b.classList.remove('open');
+    b.nextElementSibling.classList.remove('open');
+  });
+  if (!isOpen) {
+    btn.classList.add('open');
+    answer.classList.add('open');
+  }
+}
+</script>
+{% endblock %}
+{% endblock %}

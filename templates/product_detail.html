@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}{{ product.brand }} {{ product.model }} – Loska{% endblock %}
+{% block content %}
+<div class="page-header"><div class="container">
+  <div class="breadcrumb"><a href="{{ url_for('home') }}">Home</a><span class="sep">/</span><a href="{{ url_for('products') }}">Phones</a><span class="sep">/</span><span>{{ product.brand if product else '' }} {{ product.model if product else '' }}</span></div>
+</div></div>
+<section class="section-sm"><div class="container">
+{% if product %}
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start">
+  <div><div style="border-radius:var(--radius-lg);overflow:hidden;border:2px solid var(--gray-200);background:var(--off-white);display:flex;align-items:center;justify-content:center;height:380px">
+    <img src="{{ product.image_url or '' }}" alt="{{ product.brand }} {{ product.model }}" style="max-height:360px;object-fit:contain" onerror="this.src='https://via.placeholder.com/400x360?text=Phone'">
+  </div></div>
+  <div>
+    <div class="product-brand" style="font-size:.75rem;margin-bottom:6px">{{ product.brand }}</div>
+    <h1 style="font-size:1.8rem;margin-bottom:16px">{{ product.model }}</h1>
+    <div style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--black);margin-bottom:12px">KSh {{ '{:,.0f}'.format(product.price) }}</div>
+    {% if product.stock > 5 %}<span class="stock-ok"><i class="fas fa-check-circle"></i> In Stock ({{ product.stock }} available)</span>
+    {% elif product.stock > 0 %}<span class="stock-low"><i class="fas fa-exclamation-circle"></i> Only {{ product.stock }} left!</span>
+    {% else %}<span class="stock-out"><i class="fas fa-times-circle"></i> Out of Stock</span>{% endif %}
+    <p style="color:var(--gray-600);line-height:1.7;margin:20px 0">{{ product.description or 'No description available.' }}</p>
+    {% if product.stock > 0 %}
+    <form method="POST" action="{{ url_for('add_to_cart', item_id=product.id) }}">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+        <label style="font-size:.875rem;font-weight:600">Qty:</label>
+        <div class="qty-control">
+          <button type="button" class="qty-btn" data-action="dec">−</button>
+          <input type="number" class="qty-input" name="quantity" value="1" min="1" max="{{ product.stock }}">
+          <button type="button" class="qty-btn" data-action="inc">+</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <button type="submit" class="btn btn-gold btn-lg"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+        <a href="{{ url_for('cart') }}" class="btn btn-outline btn-lg"><i class="fas fa-shopping-cart"></i> View Cart</a>
+      </div>
+    </form>
+    {% endif %}
+    <div style="margin-top:24px;padding:16px;background:var(--gold-pale);border-radius:var(--radius-sm);border:1px solid var(--gold);display:flex;gap:20px;font-size:.8rem;color:var(--gray-700);flex-wrap:wrap">
+      <span><i class="fas fa-shield-alt" style="color:var(--gold-dark)"></i> 1 Year Warranty</span>
+      <span><i class="fas fa-truck" style="color:var(--gold-dark)"></i> Fast Delivery</span>
+      <span><i class="fas fa-undo" style="color:var(--gold-dark)"></i> 7-Day Returns</span>
+    </div>
+  </div>
+</div>
+{% else %}<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Product not found.</p><a href="{{ url_for('products') }}" class="btn btn-gold mt-3">Back to Phones</a></div>{% endif %}
+</div></section>
+{% endblock %}
