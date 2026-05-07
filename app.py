@@ -12,12 +12,31 @@ app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'loska-secret-2024-change-in-production')
 
 # ── Firebase ──────────────────────────────────────────────────────────────────
+import json
+
+# ── Firebase ──────────────────────────────────────────────────────────────────
 try:
-    cred = credentials.Certificate('serviceAccountKey.json')
-    firebase_admin.initialize_app(cred, {
-        'databaseURL': os.environ.get('FIREBASE_DATABASE_URL', 'https://your-project-default-rtdb.firebaseio.com')
-    })
-    firebase_connected = True
+    firebase_creds = os.environ.get("FIREBASE_CREDENTIALS")
+
+    if firebase_creds:
+        cred_dict = json.loads(firebase_creds)
+
+        cred = credentials.Certificate(cred_dict)
+
+        firebase_admin.initialize_app(cred, {
+            'databaseURL': os.environ.get(
+                'FIREBASE_DATABASE_URL',
+                'https://loska-ecommerce-default-rtdb.firebaseio.com/'
+            )
+        })
+
+        firebase_connected = True
+        print("Firebase connected successfully!")
+
+    else:
+        print("FIREBASE_CREDENTIALS environment variable missing")
+        firebase_connected = False
+
 except Exception as e:
     print(f"Firebase not connected: {e}")
     firebase_connected = False
