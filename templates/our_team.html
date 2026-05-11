@@ -21,15 +21,15 @@
     </div>
     <div class="team-grid">
       {% for member in [
-        ('CEO & Founder','fa-user-tie','Leads the company vision, strategy, and overall operations with 10+ years in telecoms.','fas fa-linkedin,fas fa-twitter'),
-        ('General Manager','fa-user-cog','Oversees day-to-day operations, supply chain, and delivery logistics across Kenya.','fas fa-linkedin,fas fa-twitter'),
-        ('Head of Sales','fa-chart-line','Drives revenue growth and manages the sales team to deliver exceptional customer experiences.','fas fa-linkedin,fas fa-twitter'),
-        ('Head of Technology','fa-laptop-code','Manages our e-commerce platform, digital payments, and IT infrastructure.','fas fa-linkedin,fas fa-github'),
+        ('Human Resource Manager','fa-user-tie','Leads the company vision, strategy, and overall operations with 10+ years in telecoms.','fas fa-linkedin,fas fa-twitter'),
+        ('General Manager','fa-user-cog','Oversees day-to-day operations)
+        ('Aministrator','fa-chart-line','Handles day to day working and workers activities.','fas fa-linkedin,fas fa-twitter'),
+        ('Head of Accounts','fa-laptop-code','Manages our e-commerce and accounts.','fas fa-linkedin,fas fa-github'),
       ] %}
       <div class="team-card animate-up">
         <div class="avatar-placeholder"><i class="fas {{ member[1] }}"></i></div>
         <div class="team-body">
-          <h3>{{ ['James Mwangi','Shote Ali','Peter Kamau','Kelvin Nderitu'][loop.index0] }}</h3>
+          <h3>{{ ['Mr Munyiri','Shote Ali','Lucy','Njeri'][loop.index0] }}</h3>
           <div class="role">{{ member[0] }}</div>
           <p>{{ member[1] }}</p>
           <p style="font-size:.85rem;color:var(--gray-600);margin-top:8px">{{ member[2] }}</p>
